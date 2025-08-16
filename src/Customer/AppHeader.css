@@ -1,0 +1,44 @@
+@font-face {
+    font-family: 'Shilla_CultureB-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/Shilla_CultureB-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+.app-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 70px;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.appheader-logo{
+    width: 140px;
+    height: auto;
+    display: block;
+    cursor: pointer;
+}
+.appheader-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 가운데 정렬 */
+    gap: 170px;               /* 메뉴 사이 넓은 간격 */
+    flex: 1;                 /* 메뉴 영역을 넓게 차지 */
+}
+.appheader-menu p {
+    text-decoration: none;
+    color: #42542c;
+    font-size: 1.2em;
+    font-family: 'Arial', sans-serif;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    font-family: 'Shilla_CultureB-Bold';
+}
+.appheader-menu .active {
+  font-weight: bold;
+  color: black /* 활성화된 메뉴 항목 색상 */
+}
+.appheader-menu p:hover {
+    color: #145214; /* 호버 시 색상 변경 */
+}

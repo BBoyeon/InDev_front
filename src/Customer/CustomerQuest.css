@@ -1,0 +1,8 @@
+.customer-quest{
+    background-image: url('/image.png'); /* public 폴더 기준 경로 */
+  background-size: cover;       /* 화면에 꽉 차게 */
+  background-position: center;  /* 가운데 정렬 */
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+}
