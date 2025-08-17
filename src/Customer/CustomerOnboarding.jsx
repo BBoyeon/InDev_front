@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import './CustomerOnboarding.css'
 import CustomerDashboard from './CustomerDashboard'
 import { useNavigate } from 'react-router-dom'
+import axios from "axios";
+import { useState } from "react";
 
 
 const characterList = [
@@ -19,6 +21,9 @@ const CustomerOnboarding = () => {
         // For now, just navigate to the CustomerDashboard
         navigate('/customer-dashboard')
     }
+  const [name, setName] = useState("");
+  const [introduce, setIntroduce] = useState("");
+
 
   return (
     <div className="customer-onboarding">
@@ -39,11 +44,20 @@ const CustomerOnboarding = () => {
       <div className="customer-onboarding-inputs">
         <div className="customer-onboarding-name-input-container">
             <p className='customer-onboarding-name'>이름:</p>
-            <input type="text" className    ="customer-onboarding-name-input" placeholder="이름을 입력하세요" />
+            <input 
+            type="text" 
+            className="customer-onboarding-name-input" 
+            placeholder="이름을 입력하세요"
+            onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="customer-onboarding-introduce-input-container">
             <p className='customer-onboarding-introduce'>한줄소개:</p>
-            <input type="text" className="customer-onboarding-introduce-input" placeholder="한줄소개를 입력하세요" />
+            <input 
+            type="text" 
+            className="customer-onboarding-introduce-input" 
+            placeholder="한줄소개를 입력하세요"
+            onChange={(e) => setIntroduce(e.target.value)}
+            />
         </div>
       </div>
 
