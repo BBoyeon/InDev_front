@@ -16,7 +16,7 @@ const OwnerOnboarding = () => {
     const handleSubmit = () => {
         // Handle the submission logic here, e.g., save the selected character and user info
         // For now, just navigate to the CustomerDashboard
-        navigate('/Owner-dashboard')
+        navigate('/owner-dashboard')
     }
 
   return (

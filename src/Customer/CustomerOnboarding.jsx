@@ -3,7 +3,6 @@ import './CustomerOnboarding.css'
 import CustomerDashboard from './CustomerDashboard'
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
-import { useState } from "react";
 
 
 const characterList = [
@@ -15,15 +14,22 @@ const characterList = [
 
 const CustomerOnboarding = () => {
   const [selectedIdx, setSelectedIdx] = useState(null)
-    const navigate = useNavigate()
-    const handleSubmit = () => {
-        // Handle the submission logic here, e.g., save the selected character and user info
-        // For now, just navigate to the CustomerDashboard
-        navigate('/customer-dashboard')
-    }
+  const navigate = useNavigate()
   const [name, setName] = useState("");
   const [introduce, setIntroduce] = useState("");
-
+    const handleLogin = async () => {
+    try { 
+      const response = await axios.post('http://localhost:5173/customer/', {
+        nickname: name,
+        intro: introduce,
+        reward:100
+      });
+      console.log(response.data);
+      navigate('/customer-dashboard');
+    } catch (error) {
+      console.error("There was an error submitting the onboarding data!", error);
+    }
+  }
 
   return (
     <div className="customer-onboarding">
@@ -61,7 +67,7 @@ const CustomerOnboarding = () => {
         </div>
       </div>
 
-        <button onClick={handleSubmit} className="customer-onboarding-submit">시작하겠소!</button>
+        <button onClick={(e) => handleLogin(e)} className="customer-onboarding-submit">시작하겠소!</button>
     </div>
   )
 }
