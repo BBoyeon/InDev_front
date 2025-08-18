@@ -6,8 +6,11 @@ import CustomerDashboard from "./Customer/CustomerDashboard";
 import CustomerMarket from "./Customer/CustomerMarket";
 import CustomerQuest from "./Customer/CustomerQuest";
 import CustomerProfile from "./Customer/CustomerProfile";
+
 import OwnerDashboard from "./Owner/OwnerDashboard/OwnerDashboard";
 import OwnerOnboarding from "./Owner/OwnerOnboarding/OwnerOnboarding";
+import OwnerQuest from "./Owner/OwnerQuest/OwnerQuest";
+import OwnerProfile from "./Owner/OwnerProfile/OwnerProfile";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -25,6 +28,9 @@ function App() {
 
          <Route path="/owner-onboarding" element={<OwnerOnboarding />} />
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+        <Route path="/owner-quest" element={<OwnerQuest />} />
+        <Route path="/owner-profile" element={<OwnerProfile />} />
+        
       </Routes>
     </Router>
   );
