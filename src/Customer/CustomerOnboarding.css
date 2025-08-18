@@ -71,8 +71,32 @@ font-family: 'Shilla_CultureB-Bold';
   border-radius: 5px; /* 둥근 모서리 */
   font-family: 'Shilla_CultureB-Bold';
 }
+
+.customer-onboarding-gender {
+  color: #42542c;
+  font-size: 1em;
+  margin-right: 10px;
+}
+
+.gender-button-group {
+  display: flex;
+  gap: 30px; /* 👉 간격 넓게 조정 */
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.gender-radio {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9em;
+  color: #333;
+  cursor: pointer;
+}
+
 .customer-onboarding-name-input-container,
-.customer-onboarding-introduce-input-container {
+.customer-onboarding-introduce-input-container,
+.customer-onboarding-gender-input-container {
   display: flex;
   align-items: center;   /* 세로 가운데 정렬 */
   gap: 10px;             /* 텍스트와 입력박스 사이 간격 */

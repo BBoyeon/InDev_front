@@ -14,21 +14,23 @@ const characterList = [
 
 const CustomerOnboarding = () => {
   const [selectedIdx, setSelectedIdx] = useState(null)
-  const navigate = useNavigate()
   const [name, setName] = useState("");
+  const [gender, setGender] = useState("")
   const [introduce, setIntroduce] = useState("");
-    const handleLogin = async () => {
-    try { 
-      const response = await axios.post('http://localhost:5173/customer/', {
-        nickname: name,
-        intro: introduce,
-        reward:100
-      });
-      console.log(response.data);
-      navigate('/customer-dashboard');
-    } catch (error) {
-      console.error("There was an error submitting the onboarding data!", error);
+  const navigate = useNavigate()
+
+  const handleLogin = () => {
+    if (!name || !introduce || selectedIdx === null || !gender) {
+      alert("모든 항목을 입력해주세요.")
+      return
     }
+
+    localStorage.setItem('name', name)
+    localStorage.setItem('introduce', introduce)
+    localStorage.setItem('gender', gender)
+    localStorage.setItem('character', characterList[selectedIdx].src)
+
+    navigate('/customer-dashboard')
   }
 
   return (
@@ -49,19 +51,40 @@ const CustomerOnboarding = () => {
 
       <div className="customer-onboarding-inputs">
         <div className="customer-onboarding-name-input-container">
-            <p className='customer-onboarding-name'>이름:</p>
+            <p className='customer-onboarding-name'>이름  : </p>
             <input 
             type="text" 
             className="customer-onboarding-name-input" 
             placeholder="이름을 입력하세요"
             onChange={(e) => setName(e.target.value)} />
         </div>
+
+        <div className="customer-onboarding-gender-input-container">
+          <p className='customer-onboarding-gender'>성별  : </p>
+          <div className="gender-button-group">
+            <button
+              type="button"
+              className={gender === 'male' ? 'gender-button selected' : 'gender-button'}
+              onClick={() => setGender('male')}
+            >
+              남성
+            </button>
+            <button
+              type="button"
+              className={gender === 'female' ? 'gender-button selected' : 'gender-button'}
+              onClick={() => setGender('female')}
+            >
+              여성
+            </button>
+          </div>
+        </div>
+
         <div className="customer-onboarding-introduce-input-container">
-            <p className='customer-onboarding-introduce'>한줄소개:</p>
+            <p className='customer-onboarding-introduce'>한 줄 소개  : </p>
             <input 
             type="text" 
             className="customer-onboarding-introduce-input" 
-            placeholder="한줄소개를 입력하세요"
+            placeholder="한 줄 소개를 입력하세요"
             onChange={(e) => setIntroduce(e.target.value)}
             />
         </div>

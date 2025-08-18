@@ -7,7 +7,7 @@ const CustomerDashboard = () => {
   return (
     <div className="customer-dashboard">
       <AppHeader />
-      
+      <p>dd</p>
     </div>
   )
 }
