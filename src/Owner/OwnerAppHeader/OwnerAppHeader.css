@@ -1,0 +1,20 @@
+.appheader-menu p {
+  color: #42542c;
+  font-size: 1.2em;
+  font-family: 'Shilla_CultureB-Bold', Arial, sans-serif;
+  cursor: pointer;
+  transition: color 0.3s, background 0.3s;
+  padding: 6px 18px;
+  border-radius: 8px;
+}
+
+.appheader-menu p:hover {
+  color: #fff;
+  background-color: #145214;
+}
+
+.appheader-menu .active {
+  color: #fff;
+  background-color: #42542c;
+  font-weight: bold;
+}

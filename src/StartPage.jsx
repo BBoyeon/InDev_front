@@ -11,7 +11,7 @@ const StartPage = () => {
   }
   return (
     <div className="start-page">
-      <img src="/3263780b-ad49-4e25-ac0d-ad76e00f35a7-removebg-preview.png" alt="Logo" className="logo" />
+      <img src="/마실로고.png" alt="Logo" className="logo" />
       <h1 className="start-page-title">오늘도 동네 한 바퀴 돌아보겠소?</h1>
       <button onClick={handleStartClick} className="start-page-button">시작하기</button>
     </div>

@@ -1,14 +1,14 @@
 import React from 'react'
-import './OwnerProfile.css'
+import './OwnerMarket.css'
 import OwnerAppHeader from '../OwnerAppHeader/OwnerAppHeader'
 import { useNavigate } from 'react-router-dom'
 
-const OwnerProfile = () => {
+const OwnerMarket = () => {
   return (
-    <div className='owner-profile'>
-      <OwnerAppHeader />
+    <div className='owner-market'>
+      <OwnerAppHeader/>
     </div>
   )
 }
 
-export default OwnerProfile
+export default OwnerMarket

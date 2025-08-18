@@ -11,6 +11,7 @@ import OwnerDashboard from "./Owner/OwnerDashboard/OwnerDashboard";
 import OwnerOnboarding from "./Owner/OwnerOnboarding/OwnerOnboarding";
 import OwnerQuest from "./Owner/OwnerQuest/OwnerQuest";
 import OwnerProfile from "./Owner/OwnerProfile/OwnerProfile";
+import OwnerMarket from "./Owner/OwnerMarket/OwnerMarket";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
         <Route path="/owner-quest" element={<OwnerQuest />} />
         <Route path="/owner-profile" element={<OwnerProfile />} />
+        <Route path="/owner-market" element={<OwnerMarket />} />
         
       </Routes>
     </Router>

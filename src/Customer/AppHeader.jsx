@@ -19,7 +19,7 @@ const AppHeader = ({ activeMenu }) => {
 
   return (
     <div className="app-header">
-      <img src="/3263780b-ad49-4e25-ac0d-ad76e00f35a7-removebg-preview.png" alt="Logo" className='appheader-logo' onClick={handleDashboardClick}/>
+      <img src="/마실 손님ver.png" alt="Logo" className='appheader-logo' onClick={handleDashboardClick}/>
       <div className="appheader-menu">
         <p className={activeMenu === 'quest' ? 'active' : ''} onClick={handleQuestClick}>오늘의 의뢰</p>
         <p className={activeMenu === 'market' ? 'active' : ''} onClick={handleMarketClick}>마실 나눔 장터</p>
