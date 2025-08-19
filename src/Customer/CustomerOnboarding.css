@@ -5,7 +5,7 @@
     font-style: normal;
 }
 .customer-onboarding {
-   background-image: url('/image.png'); /* public 폴더 기준 경로 */
+  background-image: url('/image.png'); /* public 폴더 기준 경로 */
   background-size: cover;       /* 화면에 꽉 차게 */
   background-position: center;  /* 가운데 정렬 */
   background-repeat: no-repeat;
@@ -57,10 +57,10 @@ font-family: 'Shilla_CultureB-Bold';
 /*이름과 한줄소개*/
 .customer-onboarding-inputs {
   display: flex;
- flex-direction: column; /* 세로 방향으로 정렬 */
+  flex-direction: column; /* 세로 방향으로 정렬 */
   align-items: center; /* 가운데 정렬 */
-  gap: 20px; /* 입력 필드 사이 간격 */
-  padding-top: 50px; /* 위쪽 여백 */
+  gap: 5px; /* 입력 필드 사이 간격 */
+  padding-top: 10px; /* 위쪽 여백 */
   font-family: 'Shilla_CultureB-Bold';
 }
 .customer-onboarding-inputs input {
@@ -78,11 +78,32 @@ font-family: 'Shilla_CultureB-Bold';
   margin-right: 10px;
 }
 
+.gender-button {
+  padding: 8px 16px;
+  font-size: 0.9em;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f0f0f0;
+  font-family: 'Shilla_CultureB-Bold';
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
 .gender-button-group {
   display: flex;
-  gap: 30px; /* 👉 간격 넓게 조정 */
+  gap: 10px; /* 👉 간격 넓게 조정 */
   justify-content: center;
   margin-top: 10px;
+}
+
+.category-button:hover {
+  background-color: #ddd;
+}
+
+.gender-button.selected {
+  background-color: #42542c;
+  color: white;
+  border-color: #42542c;
 }
 
 .gender-radio {
