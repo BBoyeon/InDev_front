@@ -1,11 +1,11 @@
 import React from "react";
 import StartPage from "./StartPage";
 import RoleChoice from "./RoleChoice";
-import CustomerOnboarding from "./Customer/CustomerOnboarding";
-import CustomerDashboard from "./Customer/CustomerDashboard";
-import CustomerMarket from "./Customer/CustomerMarket";
-import CustomerQuest from "./Customer/CustomerQuest";
-import CustomerProfile from "./Customer/CustomerProfile";
+import CustomerOnboarding from "./Customer/CustomerOnboarding/CustomerOnboarding";
+import CustomerDashboard from "./Customer/CustomerDashboard/CustomerDashboard";
+import CustomerMarket from "./Customer/CustomerMarket/CustomerMarket";
+import CustomerQuest from "./Customer/CustomerQuest/CustomerQuest";
+import CustomerProfile from "./Customer/CustomerProfile/CustomerProfile";
 
 import OwnerDashboard from "./Owner/OwnerDashboard/OwnerDashboard";
 import OwnerOnboarding from "./Owner/OwnerOnboarding/OwnerOnboarding";

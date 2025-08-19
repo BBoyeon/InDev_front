@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './CustomerOnboarding.css'
-import CustomerDashboard from './CustomerDashboard'
+import CustomerDashboard from "../CustomerDashboard/CustomerDashboard";
 import { useNavigate } from 'react-router-dom'
 import axios from "axios";
 

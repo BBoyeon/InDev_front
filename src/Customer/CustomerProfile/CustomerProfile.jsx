@@ -1,6 +1,6 @@
 import React from 'react'
 import './CustomerProfile.css'
-import AppHeader from './AppHeader'
+import AppHeader from '../CustomerAppHeader/AppHeader';
 
 const CustomerProfile = () => {
   return (

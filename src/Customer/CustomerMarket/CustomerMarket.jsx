@@ -1,6 +1,6 @@
 import React from 'react'
 import './CustomerMarket.css'
-import AppHeader from './AppHeader'
+import AppHeader from '../CustomerAppHeader/AppHeader';
 
 const CustomerMarket = () => {
   return (

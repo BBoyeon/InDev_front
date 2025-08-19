@@ -1,8 +1,9 @@
 import React from 'react'
 import './RoleChoice.css'
 import { useNavigate } from 'react-router-dom'
-import CustomerOnboarding from './Customer/CustomerOnboarding'
-import OwnerOnboarding from './Owner/OwnerOnboarding/OwnerOnboarding'
+import CustomerOnboarding from "./Customer/CustomerOnboarding/CustomerOnboarding";
+import OwnerOnboarding from "./Owner/OwnerOnboarding/OwnerOnboarding";
+
 
 const RoleChoice = () => {
     const navigate = useNavigate()
