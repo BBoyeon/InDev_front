@@ -27,6 +27,7 @@ const OwnerQuest = () => {
   return (
     <div className='owner-quest'>
       <OwnerAppHeader />
+      <div className='owner-quest-underheader'>
 
       <div className='owner-myquest'>    
       <h1 className='owner-myquest-title'>의뢰 입력 및 수정</h1>
@@ -65,6 +66,12 @@ const OwnerQuest = () => {
       의뢰 작성하기
       </button>
       
+      </div>
+
+      <div className='owner-request'>
+        <h1 className='owner-request-title'>요청된 의뢰들</h1>
+      </div>
+
       </div>
   
 
