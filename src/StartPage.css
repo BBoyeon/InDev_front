@@ -42,3 +42,31 @@
 .start-page-button:hover {
   background-color: #145214; /* 호버 시 배경색 변경 */
 }
+
+.start-page-side-decoration {
+  position: absolute;
+  bottom: 40px; /* 원하는 위치 조절 */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.side-deco-left {
+  position: absolute;
+  bottom: 20px;
+  left: 40px;
+  width: 300px;
+  height: 200px;
+  z-index: 1;
+}
+
+.side-deco-right {
+  position: absolute;
+  bottom: 20px;
+  right: 40px;
+  width: 300px;
+  height: 200px;
+  z-index: 1;
+}

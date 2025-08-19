@@ -1,0 +1,141 @@
+@font-face {
+    font-family: 'Shilla_CultureB-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/Shilla_CultureB-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+.share-market {
+  background-image: url('/image.png');
+  display: flex;
+  padding: 40px;
+  gap: 40px;
+  font-family: 'Shilla_CultureB-Bold';
+  background-color: #fdf6ec;
+  align-items: flex-start;
+}
+
+.posts-section {
+  flex: 1;
+  margin-right: 40px;
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.posts-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #3b3b3b;
+}
+
+
+.post {
+border: 1px solid #ccc;
+border-radius: 10px;
+margin-bottom: 30px;
+padding: 20px;
+background-color: #fff;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+
+.post-header {
+display: flex;
+align-items: center;
+gap: 10px;
+margin-bottom: 10px;
+}
+
+
+.post-header img {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+object-fit: cover;
+}
+
+
+.post-title {
+font-size: 1.2em;
+color: #333;
+margin-bottom: 5px;
+}
+
+
+.post-location {
+font-size: 0.9em;
+color: #777;
+margin-bottom: 10px;
+}
+
+
+.post-description {
+margin-bottom: 10px;
+font-size: 0.95em;
+color: #555;
+}
+
+
+.post-image {
+width: 100%;
+max-height: 300px;
+object-fit: cover;
+border-radius: 10px;
+}
+
+
+.share-section {
+  flex: 1;
+  max-width: 550px;
+  background-color: #f8f8f8;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-self: flex-start;
+
+  /* 가운데 정렬용 */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.share-form {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+
+.share-form input[type="text"],
+.share-form textarea,
+.share-form input[type="file"] {
+padding: 10px;
+font-size: 1em;
+border: 1px solid #ccc;
+border-radius: 5px;
+font-family: 'Shilla_CultureB-Bold';
+}
+
+
+.share-form textarea {
+resize: none;
+height: 80px;
+}
+
+
+.share-form button {
+padding: 10px 15px;
+background-color: #42542c;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+font-family: 'Shilla_CultureB-Bold';
+font-size: 1em;
+}
+
+
+.share-form button:disabled {
+background-color: #ccc;
+cursor: not-allowed;
+}
