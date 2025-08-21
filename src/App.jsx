@@ -33,7 +33,7 @@ function App() {
         <Route path="/customer-exchange" element={<CustomerExchange />} />
         <Route path="/customer-record" element={<CustomerRecord />} />
 
-         <Route path="/owner-onboarding" element={<OwnerOnboarding />} />
+        <Route path="/owner-onboarding" element={<OwnerOnboarding />} />
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
         <Route path="/owner-quest" element={<OwnerQuest />} />
         <Route path="/owner-profile" element={<OwnerProfile />} />
