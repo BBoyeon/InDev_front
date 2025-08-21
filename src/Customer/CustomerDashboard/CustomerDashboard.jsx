@@ -1,4 +1,3 @@
-// src/pages/CustomerDashboard.jsx
 import React, { useEffect, useState } from 'react'
 import './CustomerDashboard.css'
 import AppHeader from '../CustomerAppHeader/AppHeader'

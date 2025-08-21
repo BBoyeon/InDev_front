@@ -1,8 +1,117 @@
-.customer-quest{
-    background-image: url('/image.png'); /* public 폴더 기준 경로 */
-  background-size: cover;       /* 화면에 꽉 차게 */
-  background-position: center;  /* 가운데 정렬 */
+@font-face {
+  font-family: 'Shilla_CultureB-Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/Shilla_CultureB-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.customer-quest {
+  background-image: url('/image.png');
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   width: 100vw;
-  height: 100vh;
+  font-family: 'Shilla_CultureB-Bold';
+  min-height: 100vh;
+}
+
+.customer-quest-underheader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; /* ✅ 가운데 정렬 */
+  gap: 80px; /* ✅ 박스 간 거리 */
+  padding: 60px 40px;
+}
+
+.customer-myquest {
+  background-image: url('/두루마기.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 480px; /* ✅ 넓힘 */
+  height: 880px; /* ✅ 높임 */
+  padding-left: 90px;
+  padding-top: 80px;
+}
+
+.customer-myquest-title {
+  color: #42542c;
+  font-size: 1.8em;
+  padding-top: 80px;
+  padding-left: 40px;   /* ← 오른쪽으로 이동 */
+  margin-bottom: 4px;
+  letter-spacing: -0.5px; /* 글자 간격 조금 좁게 */
+}
+
+.customer-myquest-description {
+  font-size: 0.85em;
+  color: #555;
+  margin-top: 4px;
+  margin-left: 42px; /* 제목과 맞춰주기 */
+}
+
+
+.customer-mission-list {
+  width: 100%;
+  max-height: none;      /* 불필요한 제한 제거 */
+  height: auto;          /* 자동 높이 조절 */
+  overflow: visible;     /* 스크롤 제거 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0;
+  margin-top: 16px;
+}
+
+.customer-mission-list::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 4px;
+  background: #f0f0f0;
+}
+
+.customer-mission-hanjul {
+  display: inline-flex;              /* 요소 크기 자동 조정 + 버튼 포함 가로 정렬 */
+  align-items: center;
+  background-color: #fdfdfd;
+  border: 2px solid #9c7e4c;
+  padding: 10px 14px;
+  margin: 16px auto;
+  border-radius: 6px;
+  font-size: 1em;
+  color: #333;
+  white-space: nowrap;              /* 줄바꿈 방지 */
+  text-align: center;
+  gap: 12px;                         /* 텍스트와 버튼 사이 간격 */
+}
+
+.customer-accept-button {
+  font-size: 0.75em;
+  padding: 4px 10px;
+  border: none;
+  background-color: #d4b28c;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;                   /* 버튼은 줄지 않도록 */
+}
+
+.customer-accept-button:hover {
+  background-color: #c79c6e;
+}
+
+.customer-nowquest{
+    margin-left: 140px;
+    margin-top: 80px;
+    border-radius: 5px;
+    width: 700px;
+    height: 550px;
+    background-color: white;
+}
+.customer-nowquest-title{
+    color: #42542c; 
+    font-size: 1.7em; 
+    padding-left: 25px;
+    padding-top: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #42542c; /* 아래쪽 테두리 */
 }
