@@ -6,6 +6,9 @@ import CustomerDashboard from "./Customer/CustomerDashboard/CustomerDashboard";
 import CustomerMarket from "./Customer/CustomerMarket/CustomerMarket";
 import CustomerQuest from "./Customer/CustomerQuest/CustomerQuest";
 import CustomerProfile from "./Customer/CustomerProfile/CustomerProfile";
+import CustomerExchange from "./Customer/CustomerExchange/CustomerExchange";
+import CustomerPoint from "./Customer/CustomerPoint/CustomerPoint";
+import CustomerRecord from "./Customer/CustomerRecord/CustomerRecord";
 
 import OwnerDashboard from "./Owner/OwnerDashboard/OwnerDashboard";
 import OwnerOnboarding from "./Owner/OwnerOnboarding/OwnerOnboarding";
@@ -26,6 +29,9 @@ function App() {
         <Route path="/customer-market" element={<CustomerMarket />} />
         <Route path="/customer-quest" element={<CustomerQuest />} />
         <Route path="/customer-profile" element={<CustomerProfile />} />
+        <Route path="/customer-point" element={<CustomerPoint />} />
+        <Route path="/customer-exchange" element={<CustomerExchange />} />
+        <Route path="/customer-record" element={<CustomerRecord />} />
 
          <Route path="/owner-onboarding" element={<OwnerOnboarding />} />
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
