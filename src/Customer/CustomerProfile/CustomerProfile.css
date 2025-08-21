@@ -1,8 +1,63 @@
 .customer-profile{
-    background-image: url('/image.png'); /* public 폴더 기준 경로 */
-    background-size: cover;       /* 화면에 꽉 차게 */
-    background-position: center;  /* 가운데 정렬 */
-    background-repeat: no-repeat;
-    width: 100vw;
-    height: 100vh;
+  background-image: url('/image.png'); /* public 폴더 기준 경로 */
+  background-size: cover;       /* 화면에 꽉 차게 */
+  background-position: center;  /* 가운데 정렬 */
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  font-family: 'Shilla_CultureB-Bold';
+}
+
+.profile-underheader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  min-height: 80vh;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 40px 60px;
+  width: 100%;
+  max-width: 1000px;
+  padding: 20px;
+}
+
+.profile-grid > div {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 50px 30px;
+  font-size: 1.2em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  word-break: keep-all;
+}
+
+.profile-grid > div:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.profile-card-badge {
+  background-color: #f9f7f2;
+}
+
+.profile-card-exchange {
+  background-color: #f2f4f9;
+}
+
+.profile-card-point {
+  background-color: #fdf1f1;
+}
+
+.profile-card-market {
+  background-color: #f3f9f3;
 }
