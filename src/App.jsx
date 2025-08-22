@@ -9,6 +9,7 @@ import CustomerProfile from "./Customer/CustomerProfile/CustomerProfile";
 import CustomerExchange from "./Customer/CustomerExchange/CustomerExchange";
 import CustomerPoint from "./Customer/CustomerPoint/CustomerPoint";
 import CustomerRecord from "./Customer/CustomerRecord/CustomerRecord";
+import CustomerBadges from "./Customer/CustomerBadges/CustomerBadges";
 
 import OwnerDashboard from "./Owner/OwnerDashboard/OwnerDashboard";
 import OwnerOnboarding from "./Owner/OwnerOnboarding/OwnerOnboarding";
@@ -32,6 +33,7 @@ function App() {
         <Route path="/customer-point" element={<CustomerPoint />} />
         <Route path="/customer-exchange" element={<CustomerExchange />} />
         <Route path="/customer-record" element={<CustomerRecord />} />
+        <Route path="/customer-badges" element={<CustomerBadges />} />
 
         <Route path="/owner-onboarding" element={<OwnerOnboarding />} />
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
