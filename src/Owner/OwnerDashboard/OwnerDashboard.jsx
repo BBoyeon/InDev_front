@@ -29,6 +29,25 @@ const OwnerDashboard = () => {
     // const saved = localStorage.getItem('stores')
     // if (saved) setStores(JSON.parse(saved))
   }, [])
+    const [showImageModal, setShowImageModal] = useState(false)
+    const [prompt, setPrompt] = useState('')
+  
+    const handleOpenModal = () => setShowImageModal(true)
+    const handleCloseModal = () => {
+      setShowImageModal(false)
+      setPrompt('')
+    }
+  
+    const handleGenerate = () => {
+      if (!prompt.trim()) {
+        alert("프롬프트를 입력해주세요!")
+        return
+      }
+      // TODO: 여기서 axios.post로 백엔드 이미지 생성 API 호출하면 됨
+      console.log("이미지 생성 요청:", prompt)
+      alert(`"${prompt}" 로 이미지 생성 요청! (추후 구현 예정)`)
+      handleCloseModal()
+    }
 
   return (
     <div className='owner-dashboard'>
@@ -42,9 +61,6 @@ const OwnerDashboard = () => {
             {userInfo.name}! <p>어서오시오 ~</p>
           </div>
           <p className="user-intro">{userInfo.intro}</p>
-          <button className="btn-edit" onClick={() => alert('프로필 수정은 추후 구현 예정')}>
-            프로필 수정
-          </button>
         </div>
 
         {/* 지도 섹션 */}
@@ -55,16 +71,13 @@ const OwnerDashboard = () => {
 
         {/* 배너/홍보 섹션 (AI 전단지 등) */}
         <div className="dashboard-banner">
-          <div className="banner-card">
-            <div>
-              <div className="banner-title">AI 전단지 생성</div>
-              <div className="banner-desc">조선 감성 그대로, AI로 빠르게 전단지 제작</div>
-            </div>
-            <button className="banner-btn" onClick={() => alert('AI 전단지 생성 기능은 추후 구현 예정')}>
-              만들러 가기
-            </button>
-          </div>
-          <img src="/ㅇ.png" alt="광고 배너 자리" className="banner-img" />
+           <div className='aiImageMake'>
+          <h2 className='aiImageMake-title'>AI 이미지 생성</h2>
+          <p className='aiImageMake-description'>AI를 통해 가게의 이미지를 생성해보세요!</p>
+          <button className='aiImageMake-btn' onClick={handleOpenModal}>
+            이미지 생성하러 가기
+          </button>
+        </div>
         </div>
 
         {/* 장식 요소 */}
@@ -73,6 +86,31 @@ const OwnerDashboard = () => {
         <img src="/decorate/산요소.png" alt="산그림" className="owner-deco-3" />
         <img src="/decorate/구름요소2.png" alt="구름요소2" className="owner-deco-4" />
       </div>
+
+       {showImageModal && (
+        <div className='modal-backdrop' onClick={handleCloseModal}>
+          <div className='modal-panel' onClick={(e) => e.stopPropagation()}>
+            <div className='modal-header'>
+              <h2>AI 이미지 생성</h2>
+    
+              <button className='modal-close' onClick={handleCloseModal}>×</button>
+            </div>
+
+            <textarea
+              className='prompt-input'
+              placeholder="프롬프트를 입력하세요. 예) 수제 소스를 사용하는, 매콤달콤한 원조 떡볶이 가게 전단지"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              rows={4}
+            />
+
+            <div className='modal-actions'>
+              <button className='btn-secondary' onClick={handleCloseModal}>취소</button>
+              <button className='btn-primary' onClick={handleGenerate}>생성하기</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

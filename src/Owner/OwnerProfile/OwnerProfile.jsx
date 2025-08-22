@@ -66,14 +66,6 @@ const OwnerProfile = () => {
               미션 성공률 75%
               인기 미션: “웰컴 미션” 이런거 넣으면 될듯..?</p>
         </div>
-
-        <div className='aiImageMake'>
-          <h2 className='aiImageMake-title'>AI 이미지 생성</h2>
-          <p className='aiImageMake-description'>AI를 통해 가게의 이미지를 생성해보세요!</p>
-          <button className='aiImageMake-btn' onClick={handleOpenModal}>
-            이미지 생성하러 가기
-          </button>
-        </div>
       </div>
 
       {/* 모달 */}
