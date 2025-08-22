@@ -1,3 +1,9 @@
+@font-face {
+    font-family: 'Shilla_CultureB-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/Shilla_CultureB-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
 .owner-profile{
     background-image: url('/image.png'); /* public 폴더 기준 경로 */
     background-size: cover;       /* 화면에 꽉 차게 */
@@ -5,4 +11,185 @@
     background-repeat: no-repeat;
     width: 100vw;
     height: 100vh;
+    font-family: 'Shilla_CultureB-Bold';
+   
+}
+.owner-profile-container{
+   border: 2px solid black;
+   width: 500px;
+   border-radius: 10px;
+   margin: 60px;
+   background-color: white;
+   padding-bottom: 20px;
+   margin-left: 90px;
+}
+.owner-profile-flex-container{
+    display: flex;
+}
+.owner-profile-info{
+    display: flex;
+}
+.owner-profile-img{
+    width: 50%
+
+}
+.owner-profile-details{
+    padding-left: 20px;
+}
+.owner-profile-title{
+    padding-left: 50px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+    font-size: 1.9em;
+}
+.owner-profile-manydetail{
+  justify-content: space-between;
+  align-items: flex-end;  
+}
+.owner-profile-edit-btn{
+    border: 1px solid black;
+    padding: 0 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+    height: 30px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+.owner-profile-edit-btn:hover{
+    background-color: #f0f0f0;
+    border: 1px solid black;
+}
+
+/*나의 마실 기록*/
+.MyMassilRecord{
+    border: 2px solid black;
+   width: 500px;
+   border-radius: 10px;
+   margin: 60px;
+   background-color: white;
+   padding-bottom: 20px;
+   margin-left: 90px;
+}
+.MyMassilRecord-title{
+    padding-left: 50px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+    font-size: 1.9em;
+}
+/*유저들 기록*/
+.UserVisitRecord{
+    border: 2px solid black;
+   width: 900px;
+   border-radius: 10px;
+   margin: 60px;
+   background-color: white;
+   padding-bottom: 20px;
+   margin-left: 90px;
+}
+.UserVisitRecord-title{
+    padding-left: 50px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+    font-size: 1.9em;
+}
+
+/* ai 전단지 */
+.aiImageMake{
+    margin-top: 60px;
+}
+.aiImageMake-btn{
+    height: 50px;
+    font-size: 1.4em;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  width: min(500px, 90%);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  animation: fadeInUp 0.25s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.modal-header h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.modal-close {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.prompt-input {
+  width: 95%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  margin: 10px 0;
+  resize: vertical;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.btn-primary {
+  background: #111827;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary:hover {
+  background: #374151;
+}
+
+/* 모달 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

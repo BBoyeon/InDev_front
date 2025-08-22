@@ -33,6 +33,7 @@ const CustomerOnboarding = () => {
     navigate('/customer-dashboard')
   }
 
+
   return (
     <div className="customer-onboarding">
       <h1 className="customer-onboarding-title">~ 당신을 알려주시오 ~</h1>
