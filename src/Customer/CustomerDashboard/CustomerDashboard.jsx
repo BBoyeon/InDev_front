@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './CustomerDashboard.css'
 import AppHeader from '../CustomerAppHeader/AppHeader'
+import StoreMap from '../../StoreMap/StoreMap'
 
 const CustomerDashboard = () => {
   const [userInfo, setUserInfo] = useState({
@@ -9,6 +10,31 @@ const CustomerDashboard = () => {
     intro: '',
     profile: '/character/남자캐릭터.png',
   })
+
+  // ✅ 예시 가게 데이터
+  const stores = [
+    {
+      name: "마실 떡볶이",
+      lat: 37.5665,
+      lng: 126.9780,
+      category: "분식",
+      address: "서울 중구 세종대로 110"
+    },
+    {
+      name: "옆집 분식",
+      lat: 37.5675,
+      lng: 126.9820,
+      category: "분식",
+      address: "서울 종로구 종로 1가"
+    },
+    {
+      name: "단골 김밥",
+      lat: 37.5640,
+      lng: 126.9760,
+      category: "김밥",
+      address: "서울 중구 남대문로"
+    }
+  ]
 
   useEffect(() => {
     const name = localStorage.getItem('nickname') || '손님'
@@ -31,13 +57,13 @@ const CustomerDashboard = () => {
         </div>
 
         <div className="dashboard-map">
-          <div className="map-placeholder">지도 영역 (추후 GPS 적용)</div>
+          <h3>내 주변 가게</h3>
+          <StoreMap stores={stores} radiusKm={3} />
         </div>
 
         <div className="dashboard-banner">
           <img src="/ㅇ.png" alt="광고 배너 자리" className="banner-img" />
         </div>
-
       </div>
     </div>
   )
