@@ -8,3 +8,55 @@
   min-height: 100vh;
   font-family: 'Shilla_CultureB-Bold';
 }
+
+.point-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -35px;
+  min-height: 80vh;
+}
+
+
+.point-container {
+  background-color: #fff;
+  padding: 20px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin-bottom: 40px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.point-total {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.point-table {
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 600px;
+  border-collapse: collapse;
+}
+
+.point-table th, .point-table td {
+  padding: 16px;
+  text-align: left;
+  font-size: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.point-table th {
+  background-color: #f2f2f2;
+  color: #222;
+}
+
+.point-table td:last-child {
+  text-align: right;
+  font-weight: bold;
+  color: #444;
+}
