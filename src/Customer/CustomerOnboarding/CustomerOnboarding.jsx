@@ -1,8 +1,8 @@
+// src/Customer/CustomerOnboarding/CustomerOnboarding.jsx
 import React, { useState } from 'react'
 import './CustomerOnboarding.css'
-import CustomerDashboard from "../CustomerDashboard/CustomerDashboard";
 import { useNavigate } from 'react-router-dom'
-import axios from "axios";
+import axios from "axios"
 
 const characterList = [
   { src: "/character/남자캐릭터.png", alt: "남자캐릭터" },
@@ -12,28 +12,41 @@ const characterList = [
 ]
 
 const CustomerOnboarding = () => {
-  const [selectedIdx, setSelectedIdx] = useState(null)
-  const [name, setName] = useState("");
+  const [character, setCharacter] = useState(null)
+  const [nickname, setNickname] = useState("")
   const [gender, setGender] = useState("")
-  const [introduce, setIntroduce] = useState("");
+  const [intro, setIntro] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
-  const handleLogin = () => {
-    if (!name || !introduce || selectedIdx === null || !gender) {
+  const handleLogin = async () => {
+    if (!nickname || !intro || character === null || !gender) {
       alert("모든 항목을 입력해주세요.")
       return
     }
 
-    // ✅ 사용자 고유 id 생성 (한 번만 생성되도록 Date.now 사용)
-    const userId = Date.now().toString()
+    setLoading(true)
+    setError(null)
 
-    localStorage.setItem('id', userId)
-    localStorage.setItem('name', name)
-    localStorage.setItem('introduce', introduce)
-    localStorage.setItem('gender', gender)
-    localStorage.setItem('character', characterList[selectedIdx].src)
+    try {
+      const response = await axios.post("https://indev-project.p-e.kr/customer/", {
+        nickname,
+        gender,
+        intro,
+        character: characterList[character].src,
+      })
 
-    navigate('/customer-dashboard')
+      console.log("신규 고객 생성:", response.data)
+
+      // 대시보드 페이지로 이동하면서 응답 데이터 전달
+      navigate(`/customer-dashboard/${response.data.customer_id}`)
+    } catch (err) {
+      console.error("고객 생성 실패:", err)
+      setError("고객 생성에 실패했습니다. 다시 시도해주세요.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -46,24 +59,25 @@ const CustomerOnboarding = () => {
             key={char.alt}
             src={char.src}
             alt={char.alt}
-            className={selectedIdx === idx ? "customer-onboarding-option selected" : "customer-onboarding-option"}
-            onClick={() => setSelectedIdx(idx)}
+            className={character === idx ? "customer-onboarding-option selected" : "customer-onboarding-option"}
+            onClick={() => setCharacter(idx)}
           />
         ))}
       </div>
 
       <div className="customer-onboarding-inputs">
         <div className="customer-onboarding-name-input-container">
-          <p className='customer-onboarding-name'>이름  : </p>
+          <p className='customer-onboarding-name'>이름 :</p>
           <input 
             type="text" 
             className="customer-onboarding-name-input" 
             placeholder="이름을 입력하세요"
-            onChange={(e) => setName(e.target.value)} />
+            onChange={(e) => setNickname(e.target.value)} 
+          />
         </div>
 
         <div className="customer-onboarding-gender-input-container">
-          <p className='customer-onboarding-gender'>성별  : </p>
+          <p className='customer-onboarding-gender'>성별 :</p>
           <div className="gender-button-group">
             <button
               type="button"
@@ -83,19 +97,25 @@ const CustomerOnboarding = () => {
         </div>
 
         <div className="customer-onboarding-introduce-input-container">
-          <p className='customer-onboarding-introduce'>한 줄 소개  : </p>
+          <p className='customer-onboarding-introduce'>한 줄 소개 :</p>
           <input 
             type="text" 
             className="customer-onboarding-introduce-input" 
             placeholder="한 줄 소개를 입력하세요"
-            onChange={(e) => setIntroduce(e.target.value)}
+            onChange={(e) => setIntro(e.target.value)}
           />
         </div>
       </div>
 
-      <button onClick={handleLogin} className="customer-onboarding-submit">
-        시작하겠소!
+      <button 
+        onClick={handleLogin} 
+        className="customer-onboarding-submit" 
+        disabled={loading}
+      >
+        {loading ? "등록 중..." : "시작하겠소!"}
       </button>
+
+      {error && <p className="error-message">{error}</p>}
     </div>
   )
 }

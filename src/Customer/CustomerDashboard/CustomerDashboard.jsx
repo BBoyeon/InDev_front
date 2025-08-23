@@ -1,15 +1,54 @@
+// src/Customer/CustomerDashboard/CustomerDashboard.jsx
 import React, { useEffect, useState } from 'react'
 import './CustomerDashboard.css'
 import AppHeader from '../CustomerAppHeader/AppHeader'
 import StoreMap from '../../StoreMap/StoreMap'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
 
 const CustomerDashboard = () => {
-  const [userInfo, setUserInfo] = useState({
-    name: '손님',
-    gender: '남자',
-    intro: '',
-    profile: '/character/남자캐릭터.png',
-  })
+  const { id } = useParams() // URL 파라미터로부터 고객 id 가져오기
+  const [customer, setCustomer] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchCustomer = async () => {
+      try {
+        const response = await axios.get(`https://indev-project.p-e.kr/customer/${id}/`)
+        setCustomer(response.data)
+      } catch (err) {
+        console.error("고객 정보 불러오기 실패:", err)
+        setError("고객 정보를 불러올 수 없습니다.")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchCustomer()
+  }, [id])
+
+  if (loading) {
+    return (
+      <div className="customer-dashboard">
+        <AppHeader />
+        <div className="dashboard-container">
+          <p>고객 정보를 불러오는 중...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !customer) {
+    return (
+      <div className="customer-dashboard">
+        <AppHeader />
+        <div className="dashboard-container">
+          <p>{error || "고객 정보가 없습니다. 처음부터 다시 시작해주세요."}</p>
+        </div>
+      </div>
+    )
+  }
 
   // ✅ 예시 가게 데이터
   const stores = [
@@ -36,26 +75,16 @@ const CustomerDashboard = () => {
     }
   ]
 
-  useEffect(() => {
-    // ✅ Onboarding에서 저장한 키 그대로 불러오기
-    const name = localStorage.getItem('name') || '손님'
-    const gender = localStorage.getItem('gender') || '남자'
-    const intro = localStorage.getItem('introduce') || ''
-    const profile = localStorage.getItem('character') || '/character/남자캐릭터.png'
-
-    setUserInfo({ name, gender, intro, profile })
-  }, [])
-
   return (
     <div className="customer-dashboard">
-      <AppHeader/>
+      <AppHeader />
       <div className="dashboard-container">
         <div className="dashboard-userinfo">
-          <img src={userInfo.profile} alt="프로필" className="profile-img" />
+          <img src={customer.character} alt="프로필" className="profile-img" />
           <div className="user-greeting">
-            {userInfo.name} {userInfo.gender === 'female' || userInfo.gender === '여자' ? '낭자' : '도령'} ! <p>어서오시오 ~</p>
+            {customer.nickname} {customer.gender === 'female' ? '낭자' : '도령'} ! <p>어서오시오 ~</p>
           </div>
-          <p className="user-intro">{userInfo.intro}</p>
+          <p className="user-intro">{customer.intro}</p>
         </div>
 
         <div className="dashboard-map">

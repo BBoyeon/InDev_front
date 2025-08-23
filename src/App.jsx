@@ -26,7 +26,7 @@ function App() {
         <Route path="/" element={<StartPage />} />
         <Route path="/role-choice" element={<RoleChoice />} />
         <Route path="/customer-onboarding" element={<CustomerOnboarding />} />
-        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+        <Route path="/customer-dashboard/:id" element={<CustomerDashboard />} />
         <Route path="/customer-market" element={<CustomerMarket />} />
         <Route path="/customer-quest" element={<CustomerQuest />} />
         <Route path="/customer-profile" element={<CustomerProfile />} />
