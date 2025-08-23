@@ -8,3 +8,76 @@
   min-height: 100vh;
   font-family: 'Shilla_CultureB-Bold';
 }
+
+.exchange-outer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  min-height: 80vh;
+}
+
+.exchange-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.point-display {
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.item-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.item-box {
+  width: 180px;
+  padding: 20px;
+  background-color: #e1e1e1;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.item-img {
+  width: 100%;
+  height: 150px;
+  border: 1px solid #333;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0 20px;
+}
+
+.item-box button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: white;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.item-box button:hover {
+  background-color: #444;
+  color: white;
+}
+
+.exchange-message {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #222;
+}
