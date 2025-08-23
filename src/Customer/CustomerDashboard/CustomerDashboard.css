@@ -36,15 +36,15 @@
 }
 
 .profile-img {
-  width: 150px;
-  height: 150px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 17px;
 }
 
 .user-greeting {
-  font-size: 18px;
+  font-size: 30px;
   font-weight: 600;
   margin-bottom: 6px;
 }
@@ -62,7 +62,7 @@
   border-radius: 10px;
   min-height: 300px;
   text-align: center;
-  font-size: 16px;
+  font-size: 25px;
   color: #333;
   border: 1px dashed #aaa;
 }
