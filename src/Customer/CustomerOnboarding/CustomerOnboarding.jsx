@@ -42,6 +42,9 @@ const CustomerOnboarding = () => {
       existingCustomers.push(newCustomer)
       localStorage.setItem('customers', JSON.stringify(existingCustomers))
 
+      // 현재 로그인한 고객 ID 따로 저장해서 새로고침/이동 시 유지되도록 함
+      localStorage.setItem('currentCustomerId', newCustomer.id)
+
       navigate(`/customer-dashboard/${newCustomer.id}`)
     } catch (err) {
       console.error("고객 저장 실패:", err)

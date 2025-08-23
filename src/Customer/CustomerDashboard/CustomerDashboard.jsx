@@ -21,7 +21,8 @@ const CustomerDashboard = () => {
   useEffect(() => {
     try {
       const customers = JSON.parse(localStorage.getItem('customers')) || []
-      const found = customers.find((c) => String(c.id) === String(id))
+      const customerId = id || localStorage.getItem('currentCustomerId')
+      const found = customers.find((c) => String(c.id) === String(customerId))
       if (found) {
         setCustomer(found)
       } else {
