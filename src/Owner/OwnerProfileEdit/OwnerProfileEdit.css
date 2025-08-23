@@ -1,0 +1,72 @@
+.owner-profile-edit{
+    background-image: url('/image.png'); /* public 폴더 기준 경로 */
+  background-size: cover;       /* 화면에 꽉 차게 */
+  background-position: center;  /* 가운데 정렬 */
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  font-family: 'Shilla_CultureB-Bold';
+}
+@font-face {
+    font-family: 'Shilla_CultureB-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/Shilla_CultureB-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+.owner-profile{
+    background-image: url('/image.png'); /* public 폴더 기준 경로 */
+    background-size: cover;       /* 화면에 꽉 차게 */
+    background-position: center;  /* 가운데 정렬 */
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    font-family: 'Shilla_CultureB-Bold';
+   
+}
+.owner-profile-container{
+   border: 2px solid black;
+   width: 500px;
+   border-radius: 10px;
+   margin: 60px;
+   background-color: white;
+   padding-bottom: 20px;
+   margin-left: 90px;
+}
+.owner-profile-flex-container{
+    display: flex;
+}
+.owner-profile-info{
+    display: flex;
+}
+.owner-profile-img{
+    width: 50%
+
+}
+.owner-profile-details{
+    padding-left: 20px;
+}
+.owner-profile-title{
+    padding-left: 50px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid black;
+    font-size: 1.9em;
+}
+.owner-profile-manydetail{
+  justify-content: space-between;
+  align-items: flex-end;  
+}
+.owner-profile-edit-btn{
+    border: 1px solid black;
+    padding: 0 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+    height: 30px;
+    margin-bottom: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+.owner-profile-edit-btn:hover{
+    background-color: #f0f0f0;
+    border: 1px solid black;
+}

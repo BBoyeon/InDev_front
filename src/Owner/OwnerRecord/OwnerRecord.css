@@ -1,0 +1,68 @@
+.owner-record{
+    background-image: url('/image.png'); /* public 폴더 기준 경로 */
+  background-size: cover;       /* 화면에 꽉 차게 */
+  background-position: center;  /* 가운데 정렬 */
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  font-family: 'Shilla_CultureB-Bold';
+}
+.customer-record{
+  background-image: url('/image.png'); /* public 폴더 기준 경로 */
+  background-size: cover;       /* 화면에 꽉 차게 */
+  background-position: center;  /* 가운데 정렬 */
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  font-family: 'Shilla_CultureB-Bold';
+}
+
+.customer-timeline {
+  padding: 20px;
+}
+
+.customer-timeline h2 {
+  margin-bottom: 16px;
+}
+
+.no-posts {
+  color: #888;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.post {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.post-profile {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.delete-btn {
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: none;
+  background-color: #ff5c5c;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #e04848;
+}

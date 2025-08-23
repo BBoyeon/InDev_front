@@ -1,28 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './OwnerQuest.css'
 import OwnerAppHeader from '../OwnerAppHeader/OwnerAppHeader'
 
 const OwnerQuest = () => {
-  // === 나의 의뢰(등록한 미션) ===
+  // --- 나의 의뢰(등록한 미션) ---
   const [missions, setMissions] = useState([
     { id: 1, title: '첫 방문 웰컴 미션', content: "음료 픽업 시 '마실 왔어요'라고 말하기", reward: '스탬프 1개' },
     { id: 2, title: '시그니처 음료 인증샷', content: '가게 로고가 보이게 컵 인증샷 찍기', reward: '쿠키 1EA' },
     { id: 3, title: '사장님에게 한마디', content: "계산 시 '오늘도 번창하세요'라고 말해보기", reward: '' },
   ])
 
-  // === 요청된 의뢰들(손님이 요청한 항목) ===
+  // --- 요청된 의뢰들(손님 요청) ---
   const [requests, setRequests] = useState([
     { id: 101, title: '스탬프 더블 이벤트 요청', requester: '김마실', completed: false },
     { id: 102, title: '신메뉴 시식 미션 요청', requester: '이단골', completed: false },
     { id: 103, title: '리뷰 남기기 미션 요청', requester: '박손님', completed: true },
   ])
 
-  // 상세 모달
+  // 앱 로드 시 localStorage에서 완료 내역을 불러와서 requests에 반영
+  useEffect(() => {
+    const stored = localStorage.getItem('completedRequests')
+    if (!stored) return
+    try {
+      const completedArr = JSON.parse(stored) // [{id, title, requester, completed:true}, ...]
+      if (Array.isArray(completedArr)) {
+        setRequests(prev =>
+          prev.map(r => {
+            const hit = completedArr.find(c => c.id === r.id)
+            return hit ? { ...r, completed: true } : r
+          })
+        )
+      }
+    } catch (_) {}
+  }, [])
+
+  // --- 상세 모달 ---
   const [selectedMission, setSelectedMission] = useState(null)
   const openDetail = (m) => setSelectedMission(m)
   const closeDetail = () => setSelectedMission(null)
 
-  // 작성 모달
+  // --- 작성 모달 ---
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -39,17 +56,22 @@ const OwnerQuest = () => {
       id: missions.length ? missions[missions.length - 1].id + 1 : 1,
       title, content, reward
     }
-    setMissions((prev) => [...prev, newMission])
+    setMissions(prev => [...prev, newMission])
     closeForm()
   }
 
-  // 요청 완료 처리
+  // --- 완료 처리 & localStorage 반영 ---
+  const persistCompleted = (updatedRequests) => {
+    const completed = updatedRequests.filter(r => r.completed)
+    localStorage.setItem('completedRequests', JSON.stringify(completed))
+  }
+
   const handleCompleteRequest = (id) => {
-    setRequests((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, completed: true } : r))
-    )
-    // 제거형으로 원하면 아래 주석을 사용:
-    // setRequests((prev) => prev.filter((r) => r.id !== id))
+    setRequests(prev => {
+      const updated = prev.map(r => (r.id === id ? { ...r, completed: true } : r))
+      persistCompleted(updated)
+      return updated
+    })
   }
 
   return (
@@ -109,6 +131,9 @@ const OwnerQuest = () => {
               </div>
             ))}
           </div>
+
+          {/* 기록 페이지로 이동하는 링크(선택) */}
+          {/* <Link to="/owner/quest-history" className="link-history">완료 기록 보러가기 →</Link> */}
         </div>
 
       </div>

@@ -16,6 +16,11 @@ import OwnerOnboarding from "./Owner/OwnerOnboarding/OwnerOnboarding";
 import OwnerQuest from "./Owner/OwnerQuest/OwnerQuest";
 import OwnerProfile from "./Owner/OwnerProfile/OwnerProfile";
 import OwnerMarket from "./Owner/OwnerMarket/OwnerMarket";
+
+import OwnerProfileEdit from "./Owner/OwnerProfileEdit/OwnerProfileEdit";
+import OwnerAi from "./Owner/OwnerAi/OwnerAi";
+import OwnerRecord from "./Owner/OwnerRecord/OwnerRecord";
+import OwnerQuestHistory from "./Owner/OwnerQuestHistory/OwnerQuestHistory";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -41,6 +46,10 @@ function App() {
         <Route path="/owner-quest" element={<OwnerQuest />} />
         <Route path="/owner-profile" element={<OwnerProfile />} />
         <Route path="/owner-market" element={<OwnerMarket />} />
+        <Route path="/owner-profile-edit" element={<OwnerProfileEdit />} />
+        <Route path="/owner-ai" element={<OwnerAi />} />
+        <Route path="/owner-record" element={<OwnerRecord />} />
+        <Route path="/owner-quest-history" element={<OwnerQuestHistory />} />
         
       </Routes>
     </Router>
