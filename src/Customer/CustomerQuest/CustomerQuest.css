@@ -18,17 +18,17 @@
 .customer-quest-underheader {
   display: flex;
   flex-direction: row;
-  justify-content: center; /* ✅ 가운데 정렬 */
-  gap: 80px; /* ✅ 박스 간 거리 */
-  padding: 60px 40px;
+  justify-content: center;
+  gap: 30px;
+  padding: 50px 30px;
 }
 
 .customer-myquest {
   background-image: url('/두루마기.png');
   background-repeat: no-repeat;
   background-size: contain;
-  width: 480px; /* ✅ 넓힘 */
-  height: 880px; /* ✅ 높임 */
+  width: 500px;
+  height: 900px;
   padding-left: 90px;
   padding-top: 80px;
 }
@@ -37,81 +37,181 @@
   color: #42542c;
   font-size: 1.8em;
   padding-top: 80px;
-  padding-left: 40px;   /* ← 오른쪽으로 이동 */
+  padding-left: 40px;
   margin-bottom: 4px;
-  letter-spacing: -0.5px; /* 글자 간격 조금 좁게 */
+  letter-spacing: -0.5px;
 }
 
 .customer-myquest-description {
   font-size: 0.85em;
   color: #555;
   margin-top: 4px;
-  margin-left: 42px; /* 제목과 맞춰주기 */
+  margin-left: 42px;
 }
-
 
 .customer-mission-list {
   width: 100%;
-  max-height: none;      /* 불필요한 제한 제거 */
-  height: auto;          /* 자동 높이 조절 */
-  overflow: visible;     /* 스크롤 제거 */
+  height: auto;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
   padding: 0;
   margin-top: 16px;
 }
 
-.customer-mission-list::-webkit-scrollbar {
-  width: 6px;
-  border-radius: 4px;
-  background: #f0f0f0;
-}
-
-.customer-mission-hanjul {
-  display: inline-flex;              /* 요소 크기 자동 조정 + 버튼 포함 가로 정렬 */
+.customer-mission-hanjul-today {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   background-color: #fdfdfd;
   border: 2px solid #9c7e4c;
-  padding: 10px 14px;
-  margin: 16px auto;
-  border-radius: 6px;
+  padding: 12px 16px;
+  margin: 16px 0 16px 40px;
+  border-radius: 10px;
   font-size: 1em;
   color: #333;
-  white-space: nowrap;              /* 줄바꿈 방지 */
-  text-align: center;
-  gap: 12px;                         /* 텍스트와 버튼 사이 간격 */
+  text-align: left;
+  gap: 12px;
+  width: 70%;
+}
+
+.customer-mission-hanjul-ongoing {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fdfdfd;
+  border: 2px solid #9c7e4c;
+  padding: 12px 16px;
+  margin: 16px auto;
+  border-radius: 10px;
+  font-size: 1em;
+  color: #333;
+  text-align: left;
+  gap: 12px;
+  width: 90%;
+}
+
+.customer-mission-hanjul-ongoing strong {
+    font-size: 1.5em;
+}
+
+.mission-title-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1em;
+  color: #333;
+  text-align: left;
+}
+.mission-title-button:hover {
+  text-decoration: underline;
 }
 
 .customer-accept-button {
-  font-size: 0.75em;
-  padding: 4px 10px;
+  font-size: 0.85em;
+  padding: 6px 12px;
   border: none;
   background-color: #d4b28c;
   color: white;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  flex-shrink: 0;                   /* 버튼은 줄지 않도록 */
 }
-
 .customer-accept-button:hover {
   background-color: #c79c6e;
 }
 
-.customer-nowquest{
-    margin-left: 140px;
-    margin-top: 80px;
-    border-radius: 5px;
-    width: 700px;
-    height: 550px;
-    background-color: white;
+.customer-nowquest {
+  margin-left: 140px;
+  margin-top: 80px;
+  border-radius: 8px;
+  width: 700px;
+  height: 550px;
+  background-color: white;
+  padding: 16px;
+  overflow-y: auto;
 }
-.customer-nowquest-title{
-    color: #42542c; 
-    font-size: 1.7em; 
-    padding-left: 25px;
-    padding-top: 10px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid #42542c; /* 아래쪽 테두리 */
+
+.customer-nowquest-title {
+  color: #42542c;
+  font-size: 1.7em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #42542c;
+  margin-bottom: 12px;
+}
+
+.quest-status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.quest-status.ongoing {
+  background: #eef2ff;
+  color: #4338ca;
+}
+.quest-status.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* 모달 공통 */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+.modal-panel {
+  width: min(480px, 92vw);
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  animation: fadeInUp .2s ease-out;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.modal-close {
+  border: 0;
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mission-detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 6px;
+}
+.mission-detail-row {
+  background: #f9fafb;
+  border: 1px solid #eef0f2;
+  border-radius: 10px;
+  padding: 12px;
+}
+.mission-detail-label {
+  display: inline-block;
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+.mission-detail-text {
+  margin: 0;
+  font-size: 14px;
+  color: #111827;
 }
