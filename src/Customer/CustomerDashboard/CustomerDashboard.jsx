@@ -37,10 +37,12 @@ const CustomerDashboard = () => {
   ]
 
   useEffect(() => {
-    const name = localStorage.getItem('nickname') || '손님'
+    // ✅ Onboarding에서 저장한 키 그대로 불러오기
+    const name = localStorage.getItem('name') || '손님'
     const gender = localStorage.getItem('gender') || '남자'
     const intro = localStorage.getItem('introduce') || ''
     const profile = localStorage.getItem('character') || '/character/남자캐릭터.png'
+
     setUserInfo({ name, gender, intro, profile })
   }, [])
 
@@ -51,7 +53,7 @@ const CustomerDashboard = () => {
         <div className="dashboard-userinfo">
           <img src={userInfo.profile} alt="프로필" className="profile-img" />
           <div className="user-greeting">
-            {userInfo.name} {userInfo.gender === '여자' ? '낭자' : '도령'} ! <p>어서오시오 ~</p>
+            {userInfo.name} {userInfo.gender === 'female' || userInfo.gender === '여자' ? '낭자' : '도령'} ! <p>어서오시오 ~</p>
           </div>
           <p className="user-intro">{userInfo.intro}</p>
         </div>
