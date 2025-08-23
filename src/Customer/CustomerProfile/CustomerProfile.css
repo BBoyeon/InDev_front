@@ -39,25 +39,30 @@
   align-items: center;
   justify-content: center;
   word-break: keep-all;
+  transition: transform 0.3s;
 }
 
 .profile-grid > div:hover {
-  transform: translateY(-4px);
+  transform: scale(1.04);
   box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
 .profile-card-badges {
   background-color: #f2f4f9;
+  cursor: pointer;
 }
 
 .profile-card-exchange {
   background-color: #f2f4f9;
+  cursor: pointer;
 }
 
 .profile-card-point {
   background-color: #fdf1f1;
+  cursor: pointer;
 }
 
 .profile-card-record {
   background-color: #f3f9f3;
+  cursor: pointer;
 }
