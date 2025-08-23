@@ -4,7 +4,6 @@ import './CustomerDashboard.css'
 import AppHeader from '../CustomerAppHeader/AppHeader'
 import StoreMap from '../../StoreMap/StoreMap'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
 
 const characterList = {
   1: "/character/남자캐릭터.png",
@@ -20,21 +19,21 @@ const CustomerDashboard = () => {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    const fetchCustomer = async () => {
-      try {
-        const response = await axios.get(`https://indev-project.p-e.kr/customer/${id}/`)
-        setCustomer(response.data)
-      } catch (err) {
-        console.error("고객 정보 불러오기 실패:", err)
+    try {
+      const customers = JSON.parse(localStorage.getItem('customers')) || []
+      const found = customers.find((c) => String(c.id) === String(id))
+      if (found) {
+        setCustomer(found)
+      } else {
         setError("고객 정보를 불러올 수 없습니다.")
-      } finally {
-        setLoading(false)
       }
+    } catch (err) {
+      console.error("고객 정보 불러오기 실패:", err)
+      setError("고객 정보를 불러올 수 없습니다.")
+    } finally {
+      setLoading(false)
     }
-
-    fetchCustomer()
   }, [id])
-
 
   if (loading) {
     return (
