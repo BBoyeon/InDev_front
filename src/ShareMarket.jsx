@@ -35,7 +35,7 @@ const ShareMarket = () => {
 
     fetchPosts()
 
-    // ✅ 로컬스토리지에서 사용자 정보 복원!!
+    // ✅ 로컬스토리지에서 사용자 정보 복원
     const customerId = localStorage.getItem("currentCustomerId")
     const customer = localStorage.getItem("currentCustomer")
     if (customerId && customer) {
@@ -44,15 +44,15 @@ const ShareMarket = () => {
       setCurrentUser({
         id: parsed.customer_id,          // 서버 구조에 맞춤
         name: parsed.nickname,
-        character: characterList[parsed.character], // 숫자 → 이미지 변환
-        characterId: parsed.character,   // 서버 전송용 숫자 값
+        character: characterList[parsed.character],
+        characterId: parsed.character,
       })
     } else {
       console.warn("⚠️ 로컬스토리지에 고객 정보가 없음")
     }
   }, [])
 
-  // 게시글 작성
+  // 게시글 작성 (FormData 사용)
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!title || !neighborhood || !content) {
@@ -65,18 +65,19 @@ const ShareMarket = () => {
     }
 
     try {
-      const payload = {
-        title,
-        content,
-        neighborhood,
-        image,
-        customer_id: currentUser.id,         // ✅ customer_id 전송
+      let formData = new FormData()
+      formData.append("title", title)
+      formData.append("content", content)
+      formData.append("neighborhood", neighborhood)
+      formData.append("customer_id", currentUser.id)
+      if (image) {
+        formData.append("image", image)  // ✅ 파일 객체 추가
       }
 
-      console.log("📤 게시글 작성 payload:", payload)
+      console.log("📤 게시글 작성 formData:", [...formData])
 
-      const res = await axios.post(`${BASE_URL}/post/`, payload, {
-        headers: { "Content-Type": "application/json" }
+      const res = await axios.post(`${BASE_URL}/post/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
       })
 
       const newPost = {
@@ -94,7 +95,7 @@ const ShareMarket = () => {
       setContent('')
       setImage(null)
     } catch (err) {
-      console.error("게시글 작성 실패:", err)
+      console.error("게시글 작성 실패:", err.response?.data || err)
       alert("게시글 작성 실패")
     }
   }
@@ -127,6 +128,15 @@ const ShareMarket = () => {
 
             <h3>{post.title}</h3>
             <p>{post.content}</p>
+
+            {/* ✅ 이미지 표시 */}
+            {post.image && (
+              <img
+                src={`${BASE_URL}${post.image}`}
+                alt="게시글 이미지"
+                className="post-image"
+              />
+            )}
 
             {/* ✅ 내 글일 때만 삭제 버튼 */}
             {post.customer_id === currentUser?.id && (

@@ -4,22 +4,43 @@ import AppHeader from '../CustomerAppHeader/AppHeader'
 import { useNavigate } from 'react-router-dom'
 
 const CustomerProfile = () => {
-
   const navigate = useNavigate()
   
   const handleBadgesClick = () => {
-      navigate('/customer-badges')
-  }
-  const handlePointClick = () => {
-      navigate('/customer-point')
-  }
-  const handleExchangeClick = () => {
-      navigate('/customer-exchange')
-  }
-    const handleRecordClick = () => {
-        navigate('/customer-record')
+    const id = localStorage.getItem("currentCustomerId")
+    if (id) {
+      navigate(`/customer-badges/${id}`)
+    } else {
+      navigate('/customer-badges') // fallback
     }
+  }
 
+  const handlePointClick = () => {
+    const id = localStorage.getItem("currentCustomerId")
+    if (id) {
+      navigate(`/customer-point/${id}`)
+    } else {
+      navigate('/customer-point') // fallback
+    }
+  }
+
+  const handleExchangeClick = () => {
+    const id = localStorage.getItem("currentCustomerId")
+    if (id) {
+      navigate(`/customer-exchange/${id}`)
+    } else {
+      navigate('/customer-exchange') // fallback
+    }
+  }
+
+  const handleRecordClick = () => {
+    const id = localStorage.getItem("currentCustomerId")
+    if (id) {
+      navigate(`/customer-record/${id}`)
+    } else {
+      navigate('/customer-record') // fallback
+    }
+  }
 
   return (
     <div className="customer-profile">

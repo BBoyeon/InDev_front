@@ -4,9 +4,16 @@ import { useNavigate } from 'react-router-dom'
 
 const AppHeader = ({ activeMenu }) => {
   const navigate = useNavigate()
+
   const handleQuestClick = () => {
-      navigate('/customer-quest')
+    const id = localStorage.getItem("currentCustomerId")
+    if (id) {
+      navigate(`/customer-quest/${id}`)
+    } else {
+      navigate('/customer-quest') // fallback
+    }
   }
+
   const handleMarketClick = () => {
     const id = localStorage.getItem("currentCustomerId")
     if (id) {
@@ -15,9 +22,18 @@ const AppHeader = ({ activeMenu }) => {
       navigate('/customer-market') // fallback
     }
   }
+
+
   const handleProfileClick = () => {
-      navigate('/customer-profile')
+    const id = localStorage.getItem("currentCustomerId")
+    if (id) {
+      navigate(`/customer-profile/${id}`)
+    } else {
+      navigate('/customer-profile') // fallback
+    }
   }
+  
+
   const handleDashboardClick = () => {
     const id = localStorage.getItem("currentCustomerId")
     if (id) {

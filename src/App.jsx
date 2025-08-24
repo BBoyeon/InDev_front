@@ -36,11 +36,17 @@ function App() {
         <Route path="/customer-market" element={<CustomerMarket />} />
         <Route path="/customer-market/:id" element={<CustomerMarket />} />
         <Route path="/customer-quest" element={<CustomerQuest />} />
+        <Route path="/customer-quest/:id" element={<CustomerQuest />} />
         <Route path="/customer-profile" element={<CustomerProfile />} />
+        <Route path="/customer-profile/:id" element={<CustomerProfile />} />
         <Route path="/customer-point" element={<CustomerPoint />} />
+        <Route path="/customer-point/:id" element={<CustomerPoint />} />
         <Route path="/customer-exchange" element={<CustomerExchange />} />
+        <Route path="/customer-exchange/:id" element={<CustomerExchange />} />
         <Route path="/customer-record" element={<CustomerRecord />} />
+        <Route path="/customer-record/:id" element={<CustomerRecord />} />
         <Route path="/customer-badges" element={<CustomerBadges />} />
+        <Route path="/customer-badges/:id" element={<CustomerBadges />} />
 
         <Route path="/owner-onboarding" element={<OwnerOnboarding />} />
         <Route path="/owner-dashboard" element={<OwnerDashboard />} />
