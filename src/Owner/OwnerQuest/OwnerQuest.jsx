@@ -74,6 +74,61 @@ const OwnerQuest = () => {
     })
   }
 
+ const handleWrite = async () => {
+  try {
+    if (!content.trim()) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    // 🔑 로컬스토리지에서 store id 꺼내오기
+    const storeId = Number(localStorage.getItem("user_pk") || localStorage.getItem("store_id"));
+    if (!storeId) {
+      alert("가게 ID를 찾을 수 없습니다. 온보딩을 먼저 완료해주세요.");
+      return;
+    }
+
+    // 서버가 기대하는 JSON payload
+    const payload = {
+      store: storeId,
+      content: content.trim(),
+      is_active: true,
+    };
+
+    const token = localStorage.getItem("token"); // 인증 필요시
+    const headers = {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+
+    const response = await axios.post(
+      "https://indev-project.p-e.kr/mission/owner-missions/", // ← 실제 엔드포인트 확인!
+      payload,
+      { headers }
+    );
+
+    if (response.status === 201 || response.status === 200) {
+      alert("의뢰가 성공적으로 작성되었습니다.");
+      // 서버 응답 데이터(response.data)에 id 포함 → 목록 업데이트
+      setMissions((prev) => [...prev, response.data]);
+      closeForm();
+    } else {
+      alert("의뢰 작성에 실패했습니다. 다시 시도해주세요.");
+    }
+  } catch (error) {
+    console.error("의뢰 작성 실패:", error);
+    console.log("status:", error?.response?.status);
+    console.log("data:", error?.response?.data);
+    alert(
+      `의뢰 작성 중 오류가 발생했습니다. ${
+        error?.response?.data ? JSON.stringify(error.response.data) : "콘솔 로그를 확인하세요."
+      }`
+    );
+  }
+};
+
+
+
   return (
     <div className='owner-quest'>
       <OwnerAppHeader />
@@ -180,7 +235,7 @@ const OwnerQuest = () => {
 
               <div className='modal-actions'>
                 <button type="button" className='btn-secondary' onClick={closeForm}>취소</button>
-                <button type="submit" className='btn-primary'>추가</button>
+                <button type="submit" className='btn-primary' onClick={handleWrite}>추가</button>
               </div>
             </form>
           </div>
