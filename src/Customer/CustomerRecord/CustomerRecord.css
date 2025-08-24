@@ -1,20 +1,28 @@
-.customer-record{
-  background-image: url('/image.png'); /* public 폴더 기준 경로 */
-  background-size: cover;       /* 화면에 꽉 차게 */
-  background-position: center;  /* 가운데 정렬 */
+.customer-record {
+  background-image: url('/image.png');
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   width: 100vw;
-  height: 100vh;
   min-height: 100vh;
   font-family: 'Shilla_CultureB-Bold';
 }
 
+.under-header{
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
+}
+
 .customer-timeline {
+  width: 100%;
+  max-width: 700px; /* ✅ ShareMarket처럼 폭 제한 */
   padding: 20px;
 }
 
 .customer-timeline h2 {
-  margin-bottom: 16px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center; /* 가운데 정렬 */
 }
 
 .no-posts {
@@ -24,23 +32,33 @@
 }
 
 .post {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 16px;
+  border: 1px solid #ccc;              /* ShareMarket과 동일 */
+  border-radius: 10px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .post-header {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  gap: 10px; /* ✅ ShareMarket과 통일 */
+  margin-bottom: 10px;
 }
 
 .post-profile {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 8px;
+  object-fit: cover; /* ✅ 이미지 찌그러짐 방지 */
+}
+
+.post-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .delete-btn {
