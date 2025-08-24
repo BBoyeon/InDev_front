@@ -39,9 +39,7 @@ const OwnerProfile = () => {
 
       <div className="profile-underheader">
         <div className="profile-grid">
-          <div className="profile-card-edit"
-            onClick={() => navigate('/owner-profile-edit')}
-          >나의 프로필 수정</div>
+      
           <div className="profile-card-history"
             onClick={() => navigate('/owner-quest-history')}
           >나의 의뢰 완료 기록</div>

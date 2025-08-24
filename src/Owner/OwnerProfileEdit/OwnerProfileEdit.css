@@ -1,5 +1,5 @@
 .owner-profile-edit{
-    background-image: url('/image.png'); /* public 폴더 기준 경로 */
+  background-image: url('/image.png'); /* public 폴더 기준 경로 */
   background-size: cover;       /* 화면에 꽉 차게 */
   background-position: center;  /* 가운데 정렬 */
   background-repeat: no-repeat;
@@ -8,65 +8,90 @@
   min-height: 100vh;
   font-family: 'Shilla_CultureB-Bold';
 }
-@font-face {
-    font-family: 'Shilla_CultureB-Bold';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/Shilla_CultureB-Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-}
-.owner-profile{
-    background-image: url('/image.png'); /* public 폴더 기준 경로 */
-    background-size: cover;       /* 화면에 꽉 차게 */
-    background-position: center;  /* 가운데 정렬 */
-    background-repeat: no-repeat;
-    width: 100vw;
-    height: 100vh;
-    font-family: 'Shilla_CultureB-Bold';
-   
-}
-.owner-profile-container{
-   border: 2px solid black;
-   width: 500px;
-   border-radius: 10px;
-   margin: 60px;
-   background-color: white;
-   padding-bottom: 20px;
-   margin-left: 90px;
-}
-.owner-profile-flex-container{
-    display: flex;
-}
-.owner-profile-info{
-    display: flex;
-}
-.owner-profile-img{
-    width: 50%
 
+/* 폰트 */
+@font-face {
+  font-family: 'Shilla_CultureB-Bold';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/Shilla_CultureB-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
 }
+
+/* (혹시 다른 곳에서 쓰면 유지) */
+.owner-profile{
+  background-image: url('/image.png'); /* public 폴더 기준 경로 */
+  background-size: cover;       
+  background-position: center;  
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Shilla_CultureB-Bold';
+}
+
+/* ====== 중앙 정렬 핵심 영역 ====== */
+/* 헤더 높이가 60px일 때, 그만큼 아래로 내리고 남은 높이에서 중앙정렬 */
+.owner-profile-flex-container{
+  display: flex;
+  align-items: center;           /* 세로 가운데 */
+  justify-content: center;       /* 가로 가운데 */
+  height: calc(100vh - 60px);    /* 헤더 제외 화면 높이 */
+  margin-top: 60px;              /* 헤더만큼 내려줌 */
+  width: 100%;
+}
+
+/* 프로필 카드 */
+.owner-profile-container{
+  border: 2px solid black;
+  width: 500px;
+  border-radius: 10px;
+  background-color: white;
+  padding-bottom: 20px;
+
+  /* 가운데 배치용으로 좌우 자동 여백, 좌측 고정 마진 제거 */
+  margin: 0 auto;
+  /* 보기 좋게 살짝 그림자 (선택) */
+  /* box-shadow: 0 4px 12px rgba(0,0,0,0.1); */
+}
+
+.owner-profile-info{
+  display: flex;
+}
+
+.owner-profile-img{
+  width: 50%;
+}
+
 .owner-profile-details{
-    padding-left: 20px;
+  padding-left: 20px;
 }
+
 .owner-profile-title{
-    padding-left: 50px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid black;
-    font-size: 1.9em;
+  padding-left: 50px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid black;
+  font-size: 1.9em;
 }
+
 .owner-profile-manydetail{
   justify-content: space-between;
   align-items: flex-end;  
 }
+
 .owner-profile-edit-btn{
-    border: 1px solid black;
-    padding: 0 15px;
-    cursor: pointer;
-    font-size: 0.9em;
-    height: 30px;
-    margin-bottom: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
+  border: 1px solid black;
+  padding: 0 15px;
+  cursor: pointer;
+  font-size: 0.9em;
+  height: 30px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  margin-left: 20px;
 }
+
 .owner-profile-edit-btn:hover{
-    background-color: #f0f0f0;
-    border: 1px solid black;
+  background-color: #f0f0f0;
+  border: 1px solid black;
 }
+
+/* 전역 여백 때문에 밀리는 이슈 방지 */
+html, body { margin: 0; }
