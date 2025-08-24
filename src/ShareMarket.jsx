@@ -35,7 +35,7 @@ const ShareMarket = () => {
 
     fetchPosts()
 
-    // ✅ 로컬스토리지에서 사용자 정보 복원
+    // ✅ 로컬스토리지에서 사용자 정보 복원!!
     const customerId = localStorage.getItem("currentCustomerId")
     const customer = localStorage.getItem("currentCustomer")
     if (customerId && customer) {
