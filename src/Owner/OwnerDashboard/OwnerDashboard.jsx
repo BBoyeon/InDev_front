@@ -69,16 +69,7 @@ const OwnerDashboard = () => {
           <StoreMap stores={stores} radiusKm={3} />
         </div>
 
-        {/* 배너/홍보 섹션 (AI 전단지 등) */}
-        <div className="dashboard-banner">
-           <div className='aiImageMake'>
-          <h2 className='aiImageMake-title'>AI 이미지 생성</h2>
-          <p className='aiImageMake-description'>AI를 통해 가게의 이미지를 생성해보세요!</p>
-          <button className='aiImageMake-btn' onClick={handleOpenModal}>
-            이미지 생성하러 가기
-          </button>
-        </div>
-        </div>
+      
 
         {/* 장식 요소 */}
         <img src="/decorate/산요소.png" alt="산그림" className="owner-deco-1" />
