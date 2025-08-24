@@ -6,10 +6,10 @@ import StoreMap from '../../StoreMap/StoreMap'
 import { useParams } from 'react-router-dom'
 
 const characterList = {
-  1: "/character/남자캐릭터.png",
+  3: "/character/남자캐릭터.png",
   2: "/character/여자캐릭터.png",
-  3: "/character/고양이캐릭터.png",
-  4: "/character/도깨비캐릭터.png",
+  4: "/character/고양이캐릭터.png",
+  1: "/character/도깨비캐릭터.png",
 }
 
 const CustomerDashboard = () => {

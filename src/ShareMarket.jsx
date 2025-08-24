@@ -4,7 +4,7 @@ import './ShareMarket.css'
 const ShareMarket = () => {
   const [title, setTitle] = useState('')
   const [neighborhood, setNeighborhood] = useState('')
-  const [description, setDescription] = useState('')
+  const [content, setContent] = useState('')
   const [image, setImage] = useState(null)
   const [posts, setPosts] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
@@ -36,7 +36,7 @@ const ShareMarket = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!title || !neighborhood || !description || !image) {
+    if (!title || !neighborhood || !content) {
       alert('모든 항목을 입력해주세요.')
       return
     }
@@ -59,8 +59,8 @@ const ShareMarket = () => {
       character: currentUser.character,
       title,
       location: neighborhood,
-      desc: description,
-      image: URL.createObjectURL(image)
+      content, // 🔹 content로 저장
+      image: image ? URL.createObjectURL(image) : null // 🔹 image 없으면 null
     }
 
     const updatedPosts = [newPost, ...posts]
@@ -74,7 +74,7 @@ const ShareMarket = () => {
 
     setTitle('')
     setNeighborhood('')
-    setDescription('')
+    setContent('')
     setImage(null)
   }
 
@@ -104,7 +104,7 @@ const ShareMarket = () => {
             </div>
             <h3>{post.title}</h3>
             <p className="post-location">{post.location}</p>
-            <p className="post-desc">{post.desc}</p>
+            <p className="post-content">{post.content}</p>
             {post.image && <img src={post.image} alt="첨부 이미지" className="post-image" />}
 
             {/* 🔹 내 글일 때만 삭제 버튼 */}
@@ -132,8 +132,8 @@ const ShareMarket = () => {
           />
           <textarea
             placeholder="간단한 설명"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
           ></textarea>
           <input
             type="file"
