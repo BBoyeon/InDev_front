@@ -1,4 +1,3 @@
-// src/ShareMarket/ShareMarket.jsx
 import React, { useEffect, useState } from 'react'
 import './ShareMarket.css'
 
@@ -46,6 +45,13 @@ const ShareMarket = () => {
       return
     }
 
+    const todayStr = new Date().toISOString().split("T")[0] // YYYY-MM-DD
+    const lastPostDate = localStorage.getItem(`lastPostDate_${currentUser.id}`)
+    if (lastPostDate === todayStr) {
+      alert("마실 공유는 하루에 한 번만 가능합니다.")
+      return
+    }
+
     const newPost = {
       id: Date.now(), // 글 고유 ID
       userId: currentUser.id, // 작성자 ID
@@ -60,6 +66,9 @@ const ShareMarket = () => {
     const updatedPosts = [newPost, ...posts]
     setPosts(updatedPosts)
     localStorage.setItem('masilPosts', JSON.stringify(updatedPosts)) // 🔹 저장
+
+    // 🔹 작성 날짜 기록
+    localStorage.setItem(`lastPostDate_${currentUser.id}`, todayStr)
 
     alert('공유 완료!')
 

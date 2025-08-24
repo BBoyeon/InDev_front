@@ -26,11 +26,10 @@ const CustomerProfile = () => {
       <AppHeader />
       <div className="profile-underheader">
         <div className="profile-grid">
-          <div className="profile-card-badges"onClick={handleBadgesClick}>나의 뱃지 확인하는 곳</div>
-          <div className="profile-card-exchange" onClick={handleExchangeClick}>포인트 교환 페이지</div>
+          <div className="profile-card-badges"onClick={handleBadgesClick}>나의 마패 모음집</div>
+          <div className="profile-card-exchange" onClick={handleExchangeClick}>엽전 교환소</div>
           <div className="profile-card-point" onClick={handlePointClick}>
-            나의 포인트 확인하는 곳<br/>
-            (밑에는 어떤 미션으로 얼마나 받았는지 확인할 수 있도록 함)
+            나의 엽전 기록소<br/>
           </div>
           <div className="profile-card-record" onClick={handleRecordClick}>나의 마실 나눔 기록들 확인하기</div>
         </div>

@@ -11,10 +11,10 @@ const CustomerBadges = () => {
   // 뱃지 조건 충족 여부 (API 연동 시 상태값 넣는 곳)
 
   const badgeStates = [
-    { img: badge1, desc: '1번 뱃지 설명', isUnlocked: false },
-    { img: badge2, desc: '2번 뱃지 설명', isUnlocked: false },
-    { img: badge3, desc: '3번 뱃지 설명', isUnlocked: false },
-    { img: badge4, desc: '4번 뱃지 설명', isUnlocked: false }
+    { img: badge1, desc: '새싹 마실꾼 : 미션 첫 완료 시에 주어지는 마패입니다.', isUnlocked: false },
+    { img: badge2, desc: '승진 관리 : 미션 10개 완료 시에 주어지는 마패입니다.', isUnlocked: false },
+    { img: badge3, desc: '발 넓은 마실꾼 : 마실 기록을 20번 남겼을 시 주어지는 마패입니다.', isUnlocked: false },
+    { img: badge4, desc: '마실 계의 임금님 : 엽전 10000개를 모았을 시에 주어지는 마패입니다.', isUnlocked: false }
   ]
 
   return (
