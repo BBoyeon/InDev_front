@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import './CustomerOnboarding.css'
 import { useNavigate } from 'react-router-dom'
+import axios from "axios"
 
 const characterList = [
   { id: 3, src: "/character/남자캐릭터.png", alt: "남자캐릭터" },
@@ -19,7 +20,7 @@ const CustomerOnboarding = () => {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!nickname.trim() || !intro.trim() || character === null || !gender) {
       alert("모든 항목을 입력해주세요.")
       return
@@ -28,27 +29,30 @@ const CustomerOnboarding = () => {
     setLoading(true)
     setError(null)
 
+    // ✅ 서버로 보낼 payload를 미리 로그로 확인
     const payload = {
       nickname: nickname.trim(),
       gender,
       intro: intro.trim(),
       character: characterList[character].id,
     }
-    console.log("저장하는 payload:", payload)
+    console.log("전송하는 payload:", payload)
 
     try {
-      const existingCustomers = JSON.parse(localStorage.getItem('customers')) || []
-      const newCustomer = { ...payload, id: Date.now() }
-      existingCustomers.push(newCustomer)
-      localStorage.setItem('customers', JSON.stringify(existingCustomers))
+      const response = await axios.post(
+        "https://indev-project.p-e.kr/customer/",
+        payload,
+        { headers: { "Content-Type": "application/json" } }
+      )
 
-      // 현재 로그인한 고객 ID 따로 저장해서 새로고침/이동 시 유지되도록 함
-      localStorage.setItem('currentCustomerId', newCustomer.id)
+      console.log("신규 고객 생성:", response.data)
 
-      navigate(`/customer-dashboard/${newCustomer.id}`)
+      // 대시보드 페이지로 이동
+      navigate(`/customer-dashboard/${response.data.customer_id || response.data.id}`)
     } catch (err) {
-      console.error("고객 저장 실패:", err)
-      setError(`고객 저장 실패: ${err.message}`)
+      console.error("고객 생성 실패:", err)
+      console.error("서버 응답:", err.response?.data) // ✅ 서버 에러 내용 직접 확인
+      setError(`고객 생성 실패: ${JSON.stringify(err.response?.data)}`)
     } finally {
       setLoading(false)
     }

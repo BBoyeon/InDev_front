@@ -1,5 +1,9 @@
+// src/ShareMarket/ShareMarket.jsx
 import React, { useEffect, useState } from 'react'
 import './ShareMarket.css'
+import axios from 'axios'
+
+const BASE_URL = "https://indev-project.p-e.kr"
 
 const ShareMarket = () => {
   const [title, setTitle] = useState('')
@@ -17,10 +21,14 @@ const ShareMarket = () => {
     4: "/character/고양이캐릭터.png",
   }
 
-  // 🔹 localStorage에서 현재 사용자 정보 & 게시글 불러오기
+  // 🔹 API에서 게시글 불러오기 + localStorage에서 사용자 정보 불러오기
   useEffect(() => {
-    const storedPosts = localStorage.getItem('masilPosts')
-    if (storedPosts) setPosts(JSON.parse(storedPosts))
+    axios.get(`${BASE_URL}/post/`)
+      .then(res => {
+        console.log("불러온 게시글:", res.data)
+        setPosts(res.data)
+      })
+      .catch(err => console.error("게시글 불러오기 실패:", err))
 
     const currentId = localStorage.getItem('currentCustomerId')
     const customers = JSON.parse(localStorage.getItem('customers') || '[]')
@@ -34,7 +42,7 @@ const ShareMarket = () => {
     }
   }, [])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!title || !neighborhood || !content) {
       alert('모든 항목을 입력해주세요.')
@@ -45,51 +53,48 @@ const ShareMarket = () => {
       return
     }
 
-    const todayStr = new Date().toISOString().split("T")[0] // YYYY-MM-DD
-    const lastPostDate = localStorage.getItem(`lastPostDate_${currentUser.id}`)
-    if (lastPostDate === todayStr) {
-      alert("마실 공유는 하루에 한 번만 가능합니다.")
-      return
+    try {
+      let formData = new FormData()
+      formData.append("title", title)
+      formData.append("content", content)
+      formData.append("neighborhood", neighborhood)
+      if (image) {
+        formData.append("image", image)
+      }
+
+      const res = await axios.post(`${BASE_URL}/post/`, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
+
+      // 서버 응답에 name/character 없음 → 프론트에서 직접 붙임
+      const newPost = {
+        ...res.data,
+        name: currentUser.name,
+        character: currentUser.character,
+        userId: currentUser.id
+      }
+
+      setPosts([newPost, ...posts])
+
+      alert('공유 완료!')
+      setTitle('')
+      setNeighborhood('')
+      setContent('')
+      setImage(null)
+    } catch (err) {
+      console.error("게시글 작성 실패:", err)
+      alert("게시글 작성 실패")
     }
-
-    const newPost = {
-      id: Date.now(), // 글 고유 ID
-      userId: currentUser.id, // 작성자 ID
-      name: currentUser.name,
-      character: currentUser.character,
-      title,
-      location: neighborhood,
-      content, // 🔹 content로 저장
-      image: image ? URL.createObjectURL(image) : null // 🔹 image 없으면 null
-    }
-
-    const updatedPosts = [newPost, ...posts]
-    setPosts(updatedPosts)
-    localStorage.setItem('masilPosts', JSON.stringify(updatedPosts)) // 🔹 저장
-
-    // 🔹 작성 날짜 기록
-    localStorage.setItem(`lastPostDate_${currentUser.id}`, todayStr)
-
-    alert('공유 완료!')
-
-    setTitle('')
-    setNeighborhood('')
-    setContent('')
-    setImage(null)
   }
 
-  const handleDelete = (postId) => {
-    const post = posts.find(p => p.id === postId)
-    if (!post) return
-    if (post.userId !== currentUser?.id) {
-      alert('본인이 작성한 게시물만 삭제할 수 있습니다.')
-      return
+  const handleDelete = async (postId) => {
+    try {
+      await axios.delete(`${BASE_URL}/post/${postId}/`)
+      setPosts(posts.filter(p => p.post_id !== postId))
+    } catch (err) {
+      console.error("게시글 삭제 실패:", err)
+      alert("삭제 실패")
     }
-    if (!window.confirm('정말 삭제하시겠습니까?')) return
-
-    const updatedPosts = posts.filter(p => p.id !== postId)
-    setPosts(updatedPosts)
-    localStorage.setItem('masilPosts', JSON.stringify(updatedPosts))
   }
 
   return (
@@ -97,19 +102,25 @@ const ShareMarket = () => {
       <div className="posts-section">
         <h2>마실 공유 피드</h2>
         {posts.map((post) => (
-          <div className="post" key={post.id}>
+          <div className="post" key={post.post_id}>
             <div className="post-header">
-              <img src={post.character} alt="character" className="post-profile" />
-              <span className="post-name">{post.name}</span>
+              <img src={post.character || "/character/남자캐릭터.png"} alt="character" className="post-profile" />
+              <span className="post-name">{post.name || "익명"}</span>
             </div>
             <h3>{post.title}</h3>
-            <p className="post-location">{post.location}</p>
+            <p className="post-location">{post.neighborhood}</p>
             <p className="post-content">{post.content}</p>
-            {post.image && <img src={post.image} alt="첨부 이미지" className="post-image" />}
+            {post.image && (
+              <img
+                src={`${BASE_URL}${post.image}`}
+                alt="첨부 이미지"
+                className="post-image"
+              />
+            )}
 
             {/* 🔹 내 글일 때만 삭제 버튼 */}
             {post.userId === currentUser?.id && (
-              <button onClick={() => handleDelete(post.id)}>삭제</button>
+              <button onClick={() => handleDelete(post.post_id)}>삭제</button>
             )}
           </div>
         ))}
