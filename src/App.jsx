@@ -34,6 +34,7 @@ function App() {
         <Route path="/customer-dashboard" element={<CustomerDashboard />} />
         <Route path="/customer-dashboard/:id" element={<CustomerDashboard />} />
         <Route path="/customer-market" element={<CustomerMarket />} />
+        <Route path="/customer-market/:id" element={<CustomerMarket />} />
         <Route path="/customer-quest" element={<CustomerQuest />} />
         <Route path="/customer-profile" element={<CustomerProfile />} />
         <Route path="/customer-point" element={<CustomerPoint />} />

@@ -7,14 +7,14 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 
 const characterList = {
-  3: "/character/남자캐릭터.png",
-  2: "/character/여자캐릭터.png",
-  4: "/character/고양이캐릭터.png",
   1: "/character/도깨비캐릭터.png",
+  2: "/character/여자캐릭터.png",
+  3: "/character/남자캐릭터.png",
+  4: "/character/고양이캐릭터.png",
 }
 
 const CustomerDashboard = () => {
-  const { id } = useParams() // URL 파라미터로부터 고객 id 가져오기
+  const { id } = useParams() // URL에서 customer_id 가져오기
   const [customer, setCustomer] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -22,11 +22,23 @@ const CustomerDashboard = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
+        // ✅ 서버에서 고객 정보 요청
         const response = await axios.get(`https://indev-project.p-e.kr/customer/${id}/`)
         setCustomer(response.data)
+
+        // 로컬스토리지 최신화 (새로고침 대비)
+        localStorage.setItem("currentCustomer", JSON.stringify(response.data))
+        localStorage.setItem("currentCustomerId", response.data.customer_id)
       } catch (err) {
         console.error("고객 정보 불러오기 실패:", err)
-        setError("고객 정보를 불러올 수 없습니다.")
+
+        // ✅ 실패 시 로컬스토리지 fallback
+        const localCustomer = localStorage.getItem("currentCustomer")
+        if (localCustomer) {
+          setCustomer(JSON.parse(localCustomer))
+        } else {
+          setError("고객 정보를 불러올 수 없습니다.")
+        }
       } finally {
         setLoading(false)
       }
@@ -34,7 +46,6 @@ const CustomerDashboard = () => {
 
     fetchCustomer()
   }, [id])
-
 
   if (loading) {
     return (
@@ -58,7 +69,7 @@ const CustomerDashboard = () => {
     )
   }
 
-  // ✅ 예시 가게 데이터
+  // ✅ 예시 가게 데이터 (Map 표시용)
   const stores = [
     {
       name: "마실 떡볶이",
@@ -85,10 +96,10 @@ const CustomerDashboard = () => {
 
   return (
     <div className="customer-dashboard">
-      <AppHeader />
+      <AppHeader activeMenu="dashboard" />
       <div className="dashboard-container">
         <div className="dashboard-userinfo">
-          {/* character 숫자 → 이미지 매핑 */}
+          {/* ✅ character 숫자를 이미지로 매핑 */}
           <img 
             src={characterList[customer.character] || "/character/남자캐릭터.png"} 
             alt="프로필" 
@@ -96,7 +107,8 @@ const CustomerDashboard = () => {
           />
           <div className="user-greeting">
             {customer.nickname}{" "}
-            {customer.gender === 'F' ? '낭자' : '도령'} ! <p>어서오시오 ~</p>
+            {customer.gender === 'F' ? '낭자' : '도령'} ! 
+            <p>어서오시오 ~</p>
           </div>
           <p className="user-intro">{customer.intro}</p>
         </div>

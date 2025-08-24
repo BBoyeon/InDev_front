@@ -8,14 +8,25 @@ const AppHeader = ({ activeMenu }) => {
       navigate('/customer-quest')
   }
   const handleMarketClick = () => {
-      navigate('/customer-market')
+    const id = localStorage.getItem("currentCustomerId")
+    if (id) {
+      navigate(`/customer-market/${id}`)
+    } else {
+      navigate('/customer-market') // fallback
+    }
   }
   const handleProfileClick = () => {
       navigate('/customer-profile')
   }
-    const handleDashboardClick = () => {
-        navigate('/customer-dashboard')
+  const handleDashboardClick = () => {
+    const id = localStorage.getItem("currentCustomerId")
+    if (id) {
+      navigate(`/customer-dashboard/${id}`)
+    } else {
+      navigate('/customer-onboarding') // fallback
     }
+  }
+
 
   return (
     <div className="app-header">

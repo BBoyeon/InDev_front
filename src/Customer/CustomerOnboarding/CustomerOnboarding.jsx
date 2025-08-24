@@ -29,7 +29,6 @@ const CustomerOnboarding = () => {
     setLoading(true)
     setError(null)
 
-    // ✅ 서버로 보낼 payload를 미리 로그로 확인
     const payload = {
       nickname: nickname.trim(),
       gender,
@@ -45,13 +44,18 @@ const CustomerOnboarding = () => {
         { headers: { "Content-Type": "application/json" } }
       )
 
-      console.log("신규 고객 생성:", response.data)
+      console.log("📌 서버 응답 전체:", response.data)
 
-      // 대시보드 페이지로 이동
-      navigate(`/customer-dashboard/${response.data.customer_id || response.data.id}`)
+      // ✅ 서버에서 받은 customer_id 기반으로 로컬스토리지 저장
+      const customerId = response.data.customer_id
+      localStorage.setItem("currentCustomerId", customerId)
+      localStorage.setItem("currentCustomer", JSON.stringify(response.data))
+
+      // ✅ 대시보드 페이지로 이동
+      navigate(`/customer-dashboard/${customerId}`)
     } catch (err) {
       console.error("고객 생성 실패:", err)
-      console.error("서버 응답:", err.response?.data) // ✅ 서버 에러 내용 직접 확인
+      console.error("서버 응답:", err.response?.data)
       setError(`고객 생성 실패: ${JSON.stringify(err.response?.data)}`)
     } finally {
       setLoading(false)

@@ -47,7 +47,7 @@ const CustomerRecord = () => {
               </div>
               <h3>{post.title}</h3>
               <p className="post-location">{post.location}</p>
-              <p className="post-desc">{post.desc}</p>
+              <p className="post-content">{post.content}</p>
               {post.image && <img src={post.image} alt="첨부 이미지" className="post-image" />}
 
               {/* 🔹 내 글일 때만 삭제 버튼 */}

@@ -13,7 +13,7 @@ const ShareMarket = () => {
   const [posts, setPosts] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
 
-  // 🔹 character id → 실제 이미지 src 매핑
+  // 캐릭터 id → 이미지 매핑
   const characterList = {
     1: "/character/도깨비캐릭터.png",
     2: "/character/여자캐릭터.png",
@@ -21,27 +21,38 @@ const ShareMarket = () => {
     4: "/character/고양이캐릭터.png",
   }
 
-  // 🔹 API에서 게시글 불러오기 + localStorage에서 사용자 정보 불러오기
+  // 게시글 불러오기 + 사용자 정보 복원
   useEffect(() => {
-    axios.get(`${BASE_URL}/post/`)
-      .then(res => {
-        console.log("불러온 게시글:", res.data)
+    const fetchPosts = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/post/`)
+        console.log("📌 서버에서 불러온 게시글:", res.data)
         setPosts(res.data)
-      })
-      .catch(err => console.error("게시글 불러오기 실패:", err))
+      } catch (err) {
+        console.error("게시글 불러오기 실패:", err)
+      }
+    }
 
-    const currentId = localStorage.getItem('currentCustomerId')
-    const customers = JSON.parse(localStorage.getItem('customers') || '[]')
-    const found = customers.find(c => String(c.id) === String(currentId))
-    if (found) {
+    fetchPosts()
+
+    // ✅ 로컬스토리지에서 사용자 정보 복원
+    const customerId = localStorage.getItem("currentCustomerId")
+    const customer = localStorage.getItem("currentCustomer")
+    if (customerId && customer) {
+      const parsed = JSON.parse(customer)
+      console.log("📌 로컬 currentUser:", parsed)
       setCurrentUser({
-        id: found.id,
-        name: found.nickname,
-        character: characterList[found.character], // id → src 변환
+        id: parsed.customer_id,          // 서버 구조에 맞춤
+        name: parsed.nickname,
+        character: characterList[parsed.character], // 숫자 → 이미지 변환
+        characterId: parsed.character,   // 서버 전송용 숫자 값
       })
+    } else {
+      console.warn("⚠️ 로컬스토리지에 고객 정보가 없음")
     }
   }, [])
 
+  // 게시글 작성
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!title || !neighborhood || !content) {
@@ -54,24 +65,25 @@ const ShareMarket = () => {
     }
 
     try {
-      let formData = new FormData()
-      formData.append("title", title)
-      formData.append("content", content)
-      formData.append("neighborhood", neighborhood)
-      if (image) {
-        formData.append("image", image)
+      const payload = {
+        title,
+        content,
+        neighborhood,
+        image,
+        customer_id: currentUser.id,         // ✅ customer_id 전송
       }
 
-      const res = await axios.post(`${BASE_URL}/post/`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+      console.log("📤 게시글 작성 payload:", payload)
+
+      const res = await axios.post(`${BASE_URL}/post/`, payload, {
+        headers: { "Content-Type": "application/json" }
       })
 
-      // 서버 응답에 name/character 없음 → 프론트에서 직접 붙임
       const newPost = {
         ...res.data,
-        name: currentUser.name,
-        character: currentUser.character,
-        userId: currentUser.id
+        customer_name: currentUser.name,
+        customer_id: currentUser.id,
+        customer_character: currentUser.characterId,
       }
 
       setPosts([newPost, ...posts])
@@ -87,6 +99,7 @@ const ShareMarket = () => {
     }
   }
 
+  // 게시글 삭제
   const handleDelete = async (postId) => {
     try {
       await axios.delete(`${BASE_URL}/post/${postId}/`)
@@ -102,24 +115,21 @@ const ShareMarket = () => {
       <div className="posts-section">
         <h2>마실 공유 피드</h2>
         {posts.map((post) => (
-          <div className="post" key={post.post_id}>
+          <div key={post.post_id} className="post">
             <div className="post-header">
-              <img src={post.character || "/character/남자캐릭터.png"} alt="character" className="post-profile" />
-              <span className="post-name">{post.name || "익명"}</span>
-            </div>
-            <h3>{post.title}</h3>
-            <p className="post-location">{post.neighborhood}</p>
-            <p className="post-content">{post.content}</p>
-            {post.image && (
               <img
-                src={`${BASE_URL}${post.image}`}
-                alt="첨부 이미지"
-                className="post-image"
+                src={characterList[post.customer_character] || "/character/남자캐릭터.png"}
+                alt="character"
+                className="post-profile"
               />
-            )}
+              <span className="post-name">{post.customer_name}</span>
+            </div>
 
-            {/* 🔹 내 글일 때만 삭제 버튼 */}
-            {post.userId === currentUser?.id && (
+            <h3>{post.title}</h3>
+            <p>{post.content}</p>
+
+            {/* ✅ 내 글일 때만 삭제 버튼 */}
+            {post.customer_id === currentUser?.id && (
               <button onClick={() => handleDelete(post.post_id)}>삭제</button>
             )}
           </div>
