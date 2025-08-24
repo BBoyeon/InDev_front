@@ -27,7 +27,14 @@ const ShareMarket = () => {
       try {
         const res = await axios.get(`${BASE_URL}/post/`)
         console.log("📌 서버에서 불러온 게시글:", res.data)
-        setPosts(res.data)
+
+        // ✅ 서버 응답(customer) → 프론트 기대(customer_id) 로 normalize
+        const normalized = res.data.map(p => ({
+          ...p,
+          customer_id: p.customer,  // 서버에서 customer(pk)만 주니까 customer_id로 맞춰줌
+        }))
+
+        setPosts(normalized)
       } catch (err) {
         console.error("게시글 불러오기 실패:", err)
       }
@@ -42,7 +49,7 @@ const ShareMarket = () => {
       const parsed = JSON.parse(customer)
       console.log("📌 로컬 currentUser:", parsed)
       setCurrentUser({
-        id: parsed.customer_id,          // 서버 구조에 맞춤
+        id: Number(parsed.customer_id),   // ✅ 숫자로 변환 (타입 불일치 방지)
         name: parsed.nickname,
         character: characterList[parsed.character],
         characterId: parsed.character,
@@ -83,7 +90,7 @@ const ShareMarket = () => {
       const newPost = {
         ...res.data,
         customer_name: currentUser.name,
-        customer_id: currentUser.id,
+        customer_id: currentUser.id,            // ✅ 새 글도 동일하게 customer_id 보장
         customer_character: currentUser.characterId,
       }
 
