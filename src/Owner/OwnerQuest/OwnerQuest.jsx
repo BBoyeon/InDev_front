@@ -8,11 +8,7 @@ const OwnerQuest = () => {
   const [missions, setMissions] = useState([]);
 
   // --- 요청된 의뢰들(손님 요청) ---
-  const [requests, setRequests] = useState([
-    { id: 101, title: '스탬프 더블 이벤트 요청', requester: '김마실', completed: false },
-    { id: 102, title: '신메뉴 시식 미션 요청', requester: '이단골', completed: false },
-    { id: 103, title: '리뷰 남기기 미션 요청', requester: '박손님', completed: true },
-  ])
+  const [requests, setRequests] = useState([]);
 
   // 앱 로드 시 localStorage에서 완료 내역을 불러와서 requests에 반영
   useEffect(() => {
@@ -61,13 +57,13 @@ const OwnerQuest = () => {
     })
   }
   const user_pk = localStorage.getItem("user_pk")
-
-  useEffect(() => {
+ 
+  useEffect(() => {               //내가 작성한 의뢰
   const fetchMissions = async () => {
     try {
        const res = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`);
       console.log("불러온 미션:", res.data);
-      setMissions(res.data);  // ✅ 받아온 데이터로 state 업데이트
+      setMissions(res.data); 
     } catch (err) {
       console.error("미션 불러오기 실패:", err);
     }
@@ -75,6 +71,22 @@ const OwnerQuest = () => {
 
   fetchMissions();
 }, []);
+ 
+
+  useEffect(() => {             //손님이 요청한 의뢰
+    const fetchRequests = async () => {
+      try {
+        const response = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`); 
+        //setRequests(response.data);
+        const filtered = response.data.filter((req) => req.is_active === false);
+        setRequests(filtered);
+      } catch (error) {
+        console.error('요청 목록을 가져오는 데 실패했습니다:', error);
+      }
+    };
+
+    fetchRequests();
+  }, []);
 
 
   // --- 서버로 미션 생성 ---
