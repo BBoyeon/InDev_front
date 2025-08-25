@@ -52,28 +52,21 @@ const OwnerQuest = () => {
   //유저pk 가져오기
   const user_pk = localStorage.getItem("user_pk")  
 
-  const handleCompleteRequest = async (id) => {           //완료누르기
-  try {
-    // ✅ 서버에 완료 상태 전달 (예: is_active를 false로 바꿈)
-    await axios.post(`https://indev-project.p-e.kr/mission/assign/<customer_id>/complete/${user_pk}/`, {
-      
-    });
+  useEffect(() => {         //완료누루기
+  const fetchRequests = async () => {
+    try {
+      const response = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`);
+      // is_active가 false 이고 has_customer가 true인 요청만 필터링
+      const filtered = response.data.filter(req => req.is_active === false && req.has_customer === true);
+      setRequests(filtered);
+    } catch (error) {
+      console.error('요청 목록을 가져오는 데 실패했습니다:', error);
+    }
+  };
 
-    // ✅ UI 상태도 업데이트
-    setRequests(prev => {
-      const updated = prev.map(r =>
-        r.id === id ? { ...r, completed: true } : r
-      );
-      persistCompleted(updated);  // 저장 함수
-      return updated;
-    });
+  fetchRequests();
+}, []);
 
-    console.log(`의뢰 ${id} 완료 처리됨`);
-  } catch (error) {
-    console.error('완료 처리 실패:', error);
-    alert('의뢰 완료 처리에 실패했습니다.');
-  }
-};
 
 
 
