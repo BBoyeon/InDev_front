@@ -28,7 +28,7 @@ const ShareMarket = () => {
         const res = await axios.get(`${BASE_URL}/post/`)
         console.log("📌 서버에서 불러온 게시글:", res.data)
 
-        // ✅ 서버 응답(customer) → 프론트 기대(customer_id) 로 normalize
+        // 서버 응답(customer) → 프론트 기대(customer_id) 로 normalize
         const normalized = res.data.map(p => ({
           ...p,
           customer_id: p.customer,  // 서버에서 customer(pk)만 주니까 customer_id로 맞춰줌
@@ -42,20 +42,20 @@ const ShareMarket = () => {
 
     fetchPosts()
 
-    // ✅ 로컬스토리지에서 사용자 정보 복원
+    // 로컬스토리지에서 사용자 정보 복원
     const customerId = localStorage.getItem("currentCustomerId")
     const customer = localStorage.getItem("currentCustomer")
     if (customerId && customer) {
       const parsed = JSON.parse(customer)
-      console.log("📌 로컬 currentUser:", parsed)
+      console.log("로컬 currentUser:", parsed)
       setCurrentUser({
-        id: Number(parsed.customer_id),   // ✅ 숫자로 변환 (타입 불일치 방지)
+        id: Number(parsed.customer_id),   // 숫자로 변환 (타입 불일치 방지)
         name: parsed.nickname,
         character: characterList[parsed.character],
         characterId: parsed.character,
       })
     } else {
-      console.warn("⚠️ 로컬스토리지에 고객 정보가 없음")
+      console.warn("로컬스토리지에 고객 정보가 없음")
     }
   }, [])
 
@@ -81,7 +81,7 @@ const ShareMarket = () => {
         formData.append("image", image)  // ✅ 파일 객체 추가
       }
 
-      console.log("📤 게시글 작성 formData:", [...formData])
+      console.log("게시글 작성 formData:", [...formData])
 
       const res = await axios.post(`${BASE_URL}/post/`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -90,7 +90,7 @@ const ShareMarket = () => {
       const newPost = {
         ...res.data,
         customer_name: currentUser.name,
-        customer_id: currentUser.id,            // ✅ 새 글도 동일하게 customer_id 보장
+        customer_id: currentUser.id,            // 새 글도 동일하게 customer_id 보장
         customer_character: currentUser.characterId,
       }
 
