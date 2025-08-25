@@ -55,7 +55,7 @@ const OwnerQuest = () => {
   const handleCompleteRequest = async (id) => {           //완료누르기
   try {
     // ✅ 서버에 완료 상태 전달 (예: is_active를 false로 바꿈)
-    await axios.post(`https://indev-project.p-e.kr/mission/assign/<customer_id>/complete/<ownermission_id>/`, {
+    await axios.post(`https://indev-project.p-e.kr/mission/assign/<customer_id>/complete/${user_pk}/`, {
       
     });
 
