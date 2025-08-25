@@ -60,11 +60,12 @@ const OwnerQuest = () => {
       return updated
     })
   }
+  const user_pk = localStorage.getItem("user_pk")
 
   useEffect(() => {
   const fetchMissions = async () => {
     try {
-      const res = await axios.get("https://indev-project.p-e.kr/mission/owner-missions/${ localStorage.getItem('user_pk') }/");
+       const res = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`);
       console.log("불러온 미션:", res.data);
       setMissions(res.data);  // ✅ 받아온 데이터로 state 업데이트
     } catch (err) {
