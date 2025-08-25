@@ -55,7 +55,7 @@
   color: #555;
 }
 
-/* 가운데: 지도 */
+
 .dashboard-map {
   flex: 1;
   background-color: #fafafa;
@@ -69,7 +69,7 @@
   border: 1px dashed #aaa;
 }
 
-/* 오른쪽: 광고 배너 */
+
 .dashboard-banner {
   margin-top: 80px;
   width: 200px;

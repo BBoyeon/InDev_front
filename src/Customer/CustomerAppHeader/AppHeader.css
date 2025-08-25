@@ -22,9 +22,9 @@
 .appheader-menu {
     display: flex;
     align-items: center;
-    justify-content: center; /* 가운데 정렬 */
-    gap: 170px;               /* 메뉴 사이 넓은 간격 */
-    flex: 1;                 /* 메뉴 영역을 넓게 차지 */
+    justify-content: center; 
+    gap: 170px; 
+    flex: 1; 
 }
 .appheader-menu p {
     text-decoration: none;
@@ -37,8 +37,8 @@
 }
 .appheader-menu .active {
   font-weight: bold;
-  color: black /* 활성화된 메뉴 항목 색상 */
+  color: black;
 }
 .appheader-menu p:hover {
-    color: #145214; /* 호버 시 색상 변경 */
+    color: #145214; 
 }
