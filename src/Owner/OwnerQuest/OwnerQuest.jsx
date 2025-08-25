@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const OwnerQuest = () => {
   // --- 나의 의뢰(등록한 미션) ---
- const [missions, setMissions] = useState([]);
+  const [missions, setMissions] = useState([]);
 
   // --- 요청된 의뢰들(손님 요청) ---
   const [requests, setRequests] = useState([
@@ -40,21 +40,11 @@ const OwnerQuest = () => {
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [reward, setReward] = useState('')
+  const [reward, setReward] = useState('') // 숫자 입력(문자열로 들어오니 변환 필요)
   const openForm = () => setShowForm(true)
   const closeForm = () => {
     setShowForm(false)
     setTitle(''); setContent(''); setReward('')
-  }
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if (!title.trim() || !content.trim()) return
-    const newMission = {
-      id: missions.length ? missions[missions.length - 1].id + 1 : 1,
-      title, content, reward
-    }
-    setMissions(prev => [...prev, newMission])
-    closeForm()
   }
 
   // --- 완료 처리 & localStorage 반영 ---
@@ -71,73 +61,66 @@ const OwnerQuest = () => {
     })
   }
 
+  // --- 서버로 미션 생성 ---
   const handleWrite = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const text = (content || "").trim();
-  if (!text) return alert("내용을 입력해주세요.");
+    const t = (title || '').trim();
+    const text = (content || '').trim();
+    const rew = Number(reward); // 숫자 변환 (NaN이면 아래에서 0으로 처리)
 
-  // 1) store pk 확보 + 숫자화
-  const raw = localStorage.getItem("user_pk") || localStorage.getItem("store_id");
-  const storeId = Number(raw);
-  if (!storeId) return alert("가게 ID가 없습니다. 온보딩을 먼저 완료해주세요.");
+    if (!t) return alert('제목을 입력해주세요.');
+    if (!text) return alert('내용을 입력해주세요.');
 
-  // 2) store 존재 검증 (없으면 404/400 → 미리 차단)
-  try {
-    await axios.get(`https://indev-project.p-e.kr/store/${storeId}/`);
-  } catch (e) {
-    return alert(`유효하지 않은 가게 ID(${storeId})입니다. 온보딩을 다시 진행해주세요.`);
-  }
+    // store pk 확보 + 숫자화
+    const raw = localStorage.getItem('user_pk') || localStorage.getItem('store_id');
+    const storeId = Number(raw);
+    if (!storeId) return alert('가게 ID가 없습니다. 온보딩을 먼저 완료해주세요.');
 
-  // 3) 서버가 받는 최소 스키마만 전송
-  const payload = { store: storeId, content: text, is_active: true };
-
-  // 4) 토큰(필요시)
-  const token = localStorage.getItem("token");
-  const headers = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-
-  const url = "https://indev-project.p-e.kr/mission/owner-missions/";
-
-  try {
-    console.log("[DEBUG] POST", url, payload, headers);
-    const res = await axios.post(url, payload, { headers });
-    if (res.status === 200 || res.status === 201) {
-      alert("의뢰가 성공적으로 등록되었습니다!");
-      setMissions((prev) => [...prev, res.data]); // 서버 응답 사용(중복 key 방지)
-      closeForm();
-    } else {
-      console.log("[DEBUG] unexpected:", res.status, res.data);
-      alert("의뢰 등록에 실패했습니다. 다시 시도해주세요.");
+    // (선택) store 존재 검증
+    try {
+      await axios.get(`https://indev-project.p-e.kr/store/${storeId}/`);
+    } catch (err) {
+      return alert(`유효하지 않은 가게 ID(${storeId})입니다. 온보딩을 다시 진행해주세요.`);
     }
-  } catch (error) {
-    // 서버가 HTML 500 페이지를 줄 수도 있어 그대로 출력
-    const status = error?.response?.status;
-    const data = error?.response?.data; // 문자열(HTML)일 수도 있음
-    const finalURL =
-      (error?.config?.baseURL || "") + (error?.config?.url || "");
-    console.error("의뢰 작성 실패:", error);
-    console.log("status:", status);
-    console.log("data:", data);
-    console.log("finalURL:", finalURL);
 
-    // 500이면 내부 예외 → 백엔드 로그 확인 필요
-    alert(
-      `의뢰 등록 실패 (status: ${status ?? "unknown"})\n` +
-      `요청 URL: ${finalURL}\n` +
-      `응답: ${typeof data === "string" ? data.slice(0, 200) + "..." : JSON.stringify(data)}`
-    );
-  }
-};
+    // 서버 스키마에 맞춰 모든 필드 포함
+    const payload = {
+      store: storeId,
+      title: t,
+      content: text,
+      reward: Number.isFinite(rew) ? rew : 0,
+      is_active: true,
+    };
 
+    const url = 'https://indev-project.p-e.kr/mission/owner-missions/';
 
+    try {
+      console.log('[DEBUG] POST', url, payload);
+      const res = await axios.post(url, payload, {
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-
-
-
+      if (res.status === 200 || res.status === 201) {
+        alert('의뢰가 성공적으로 등록되었습니다!');
+        // 서버 응답(아이디 포함)으로 목록 갱신
+        setMissions(prev => [...prev, res.data]);
+        closeForm();
+      } else {
+        console.log('[DEBUG] unexpected:', res.status, res.data);
+        alert('의뢰 등록에 실패했습니다. 다시 시도해주세요.');
+      }
+    } catch (error) {
+      const status = error?.response?.status;
+      const data = error?.response?.data;
+      console.error('의뢰 작성 실패:', error);
+      alert(
+        `의뢰 등록 실패: ${
+          data ? JSON.stringify(data) : error.message
+        }`
+      );
+    }
+  };
 
   return (
     <div className='owner-quest'>
@@ -153,7 +136,7 @@ const OwnerQuest = () => {
           <div className='owner-mission-title-list'>
             {missions.map((m) => (
               <button
-                key={m.id}
+                key={m.id ?? `mission-${Math.random()}`} // id가 항상 올 거라면 key={m.id}만
                 className='mission-title-item'
                 onClick={() => openDetail(m)}
                 title='상세 보기'
@@ -196,9 +179,6 @@ const OwnerQuest = () => {
               </div>
             ))}
           </div>
-
-          {/* 기록 페이지로 이동하는 링크(선택) */}
-          {/* <Link to="/owner/quest-history" className="link-history">완료 기록 보러가기 →</Link> */}
         </div>
 
       </div>
@@ -212,7 +192,8 @@ const OwnerQuest = () => {
               <button className='modal-close' onClick={closeForm}>×</button>
             </div>
 
-            <form className='mission-form' onSubmit={handleSubmit}>
+            {/* ✅ 폼은 handleWrite 하나만 연결 */}
+            <form className='mission-form' onSubmit={handleWrite}>
               <label>
                 제목
                 <input
@@ -228,24 +209,27 @@ const OwnerQuest = () => {
                 <textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  placeholder="예) 음료 픽업 시 '마실 왔어요'라고 말하기"
+                  placeholder="예) 아메리카노 1잔 구매 시 도장 찍기"
                   rows={4}
                   required
                 />
               </label>
 
               <label>
-                보상 (선택)
+                보상(개수, 숫자)
                 <input
+                  type="number"
+                  min="0"
                   value={reward}
                   onChange={(e) => setReward(e.target.value)}
-                  placeholder="예) 스탬프 1개, 쿠키 1EA 등"
+                  placeholder="예) 1"
                 />
               </label>
 
               <div className='modal-actions'>
                 <button type="button" className='btn-secondary' onClick={closeForm}>취소</button>
-                <button type="submit" className='btn-primary' onClick={(e) => handleWrite(e)}>추가</button>
+                {/* ✅ 클릭 핸들러 제거, submit만 */}
+                <button type="submit" className='btn-primary'>추가</button>
               </div>
             </form>
           </div>
@@ -269,7 +253,11 @@ const OwnerQuest = () => {
 
               <div className='mission-detail-row'>
                 <span className='mission-detail-label'>보상</span>
-                <p className='mission-detail-text'>{selectedMission.reward || '보상 없음'}</p>
+                <p className='mission-detail-text'>
+                  {Number.isFinite(Number(selectedMission.reward))
+                    ? `${selectedMission.reward}개`
+                    : '보상 없음'}
+                </p>
               </div>
             </div>
 
