@@ -26,7 +26,7 @@ const ShareMarket = () => {
     const fetchPosts = async () => {
       try {
         const res = await axios.get(`${BASE_URL}/post/`)
-        console.log("📌 서버에서 불러온 게시글:", res.data)
+        console.log("서버에서 불러온 게시글:", res.data)
 
         // 서버 응답(customer) → 프론트 기대(customer_id) 로 normalize
         const normalized = res.data.map(p => ({

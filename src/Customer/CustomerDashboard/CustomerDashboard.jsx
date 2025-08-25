@@ -1,4 +1,3 @@
-// src/Customer/CustomerDashboard/CustomerDashboard.jsx
 import React, { useEffect, useState } from 'react'
 import './CustomerDashboard.css'
 import AppHeader from '../CustomerAppHeader/AppHeader'
@@ -22,7 +21,7 @@ const CustomerDashboard = () => {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        // ✅ 서버에서 고객 정보 요청
+        // 서버에서 고객 정보 요청
         const response = await axios.get(`https://indev-project.p-e.kr/customer/${id}/`)
         setCustomer(response.data)
 
@@ -32,7 +31,7 @@ const CustomerDashboard = () => {
       } catch (err) {
         console.error("고객 정보 불러오기 실패:", err)
 
-        // ✅ 실패 시 로컬스토리지 fallback
+        // 실패 시 로컬스토리지 fallback
         const localCustomer = localStorage.getItem("currentCustomer")
         if (localCustomer) {
           setCustomer(JSON.parse(localCustomer))
@@ -69,7 +68,7 @@ const CustomerDashboard = () => {
     )
   }
 
-  // ✅ 예시 가게 데이터 (Map 표시용)
+  // 예시 가게 데이터 (Map 표시용)
   const stores = [
     {
       name: "마실 떡볶이",
@@ -99,7 +98,7 @@ const CustomerDashboard = () => {
       <AppHeader activeMenu="dashboard" />
       <div className="dashboard-container">
         <div className="dashboard-userinfo">
-          {/* ✅ character 숫자를 이미지로 매핑 */}
+          {/* character 숫자를 이미지로 매핑 */}
           <img 
             src={characterList[customer.character] || "/character/남자캐릭터.png"} 
             alt="프로필" 

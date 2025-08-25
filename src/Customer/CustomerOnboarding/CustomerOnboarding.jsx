@@ -1,4 +1,3 @@
-// src/Customer/CustomerOnboarding/CustomerOnboarding.jsx
 import React, { useState } from 'react'
 import './CustomerOnboarding.css'
 import { useNavigate } from 'react-router-dom'
