@@ -73,7 +73,7 @@ const OwnerQuest = () => {
 
   const handleWrite = async(e) => {
     e.preventDefault()  
-    const response = await axios.post('`https://indev-project.p-e.kr/mission/owner-missions', {
+    const response = await axios.post('https://indev-project.p-e.kr/mission/owner-missions/', {
       title:title,
       content:content,
       reward:reward,
