@@ -61,7 +61,7 @@ const CustomerRecord = () => {
             myPosts.map(post => (
               <div className="post" key={post.post_id}>
                 <div className="post-header">
-                  {/* ✅ characterList 매핑 사용 */}
+                  {/*characterList 매핑 사용 */}
                   <img 
                     src={characterList[post.customer_character] || "/character/남자캐릭터.png"} 
                     alt="character" 
