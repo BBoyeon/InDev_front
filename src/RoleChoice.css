@@ -5,47 +5,47 @@
     font-style: normal;
 }
 .role-choice{
-    background-image: url('/image.png'); /* public 폴더 기준 경로 */
-  background-size: cover;       /* 화면에 꽉 차게 */
-  background-position: center;  /* 가운데 정렬 */
+  background-image: url('/image.png'); 
+  background-size: cover;     
+  background-position: center;  
   background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
 }
 .role-choice-title {
   text-align: center;
-  color: #42542c; /* 텍스트 색상 */
-  font-size: 3.76em; /* 폰트 크기 조정 */
-  margin: 0 auto; /* 가운데 정렬 */
+  color: #42542c; 
+  font-size: 3.76em; 
+  margin: 0 auto; 
   padding-top: 290px;
   padding-bottom: 50px;
   font-family: 'Shilla_CultureB-Bold';
 }
 .role-choice-buttons {
   display: flex;
-  justify-content: center; /* 가운데 정렬 */
-  gap: 20px;                /* 버튼 사이 간격 */
-  flex-wrap: nowrap;       /* 줄바꿈 없이 한 줄로 */
-  padding-top: 70px; /* 위쪽 여백 */
-  max-width: 1100px;   /* 이미지 그룹의 최대 너비 지정 */
+  justify-content: center; 
+  gap: 20px;           
+  flex-wrap: nowrap;      
+  padding-top: 70px;
+  max-width: 1100px;  
   margin: 0 auto; 
 }
 .role-choice-buttons button {
   display: block;
-  margin: 20px auto; /* 버튼을 가운데 정렬 */
-  padding: 10px 20px; /* 버튼 패딩 */
-  color: white; /* 글자 색상 */
-  background-color: #42542c; /* 배경색 */
-  border: none; /* 테두리 제거 */
-  border-radius: 19px; /* 둥근 모서리 */
-  cursor: pointer; /* 커서 모양 변경 */
-  width: 400px; /* 버튼 너비 */
-  height: 150px; /* 버튼 높이 */
-  transition: background-color 0.3s ease; /* 배경색 변경 시 애니메이션 */
-  font-weight: bold; /* 글자 두껍게 */
+  margin: 20px auto; 
+  padding: 10px 20px;
+  color: white; 
+  background-color: #42542c; 
+  border: none;
+  border-radius: 19px; 
+  cursor: pointer;
+  width: 400px; 
+  height: 150px; 
+  transition: background-color 0.3s ease; 
+  font-weight: bold; 
   font-family: 'Shilla_CultureB-Bold';
-  font-size: 1.6em; /* 폰트 크기 */
+  font-size: 1.6em;
 }
 .role-choice-button:hover {
-  background-color: #145214; /* 호버 시 배경색 변경 */
+  background-color: #145214; 
 }

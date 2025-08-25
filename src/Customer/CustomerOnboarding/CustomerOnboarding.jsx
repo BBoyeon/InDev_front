@@ -44,14 +44,14 @@ const CustomerOnboarding = () => {
         { headers: { "Content-Type": "application/json" } }
       )
 
-      console.log("📌 서버 응답 전체:", response.data)
+      console.log("서버 응답 전체:", response.data)
 
-      // ✅ 서버에서 받은 customer_id 기반으로 로컬스토리지 저장
+      // 서버에서 받은 customer_id 기반으로 로컬스토리지 저장
       const customerId = response.data.customer_id
       localStorage.setItem("currentCustomerId", customerId)
       localStorage.setItem("currentCustomer", JSON.stringify(response.data))
 
-      // ✅ 대시보드 페이지로 이동
+      // 대시보드 페이지로 이동
       navigate(`/customer-dashboard/${customerId}`)
     } catch (err) {
       console.error("고객 생성 실패:", err)

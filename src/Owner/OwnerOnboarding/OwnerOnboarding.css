@@ -5,126 +5,141 @@
     font-style: normal;
 }
 .Owner-onboarding {
-  background-image: url('/image.png'); /* public 폴더 기준 경로 */
-  background-size: cover;       /* 화면에 꽉 차게 */
-  background-position: center;  /* 가운데 정렬 */
+  background-image: url('/image.png'); 
+  background-size: cover;     
+  background-position: center; 
   background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
 }
 .Owner-onboarding-title{
-    text-align: center;
-  color: #42542c; /* 텍스트 색상 */
-  font-size: 2.0em; /* 폰트 크기 조정 */
-   margin: 0 auto; /* 가운데 정렬 */
-  padding-top: 100px;
-font-family: 'Shilla_CultureB-Bold';
+  text-align: center;
+  color: #42542c; 
+  font-size: 3.78em; 
+  margin: 0 auto; 
+  padding-top: 130px;
+  padding-bottom: 30px;
+  font-family: 'Shilla_CultureB-Bold';
 }
 .Owner-onboarding-subtitle {
   text-align: center;
-  color: #42542c; /* 텍스트 색상 */
-  font-size: 1.0em; /* 폰트 크기 조정 */
+  color: #42542c; 
+  font-size: 1.9em; 
  font-family: 'Shilla_CultureB-Bold';
 }
 
 /*캐릭터 선택*/
 .Owner-onboarding-options {
   display: flex;
-  justify-content: center; /* 가운데 정렬 */
-  gap: 5px;               /* 옵션 사이 간격 */
-  flex-wrap: nowrap;       /* 줄바꿈 없이 한 줄로 */
-  padding-top: 20px; /* 위쪽 여백 */
-  max-width: 900px;   /* 이미지 그룹의 최대 너비 지정 */
+  justify-content: center; 
+  gap: 5px;              
+  flex-wrap: nowrap;       
+  padding-top: 40px;
+  padding-bottom : 40px; 
+  max-width: 900px; 
   margin: 0 auto; 
 }
 .Owner-onboarding-options img {
-  width: 150px; /* 이미지 크기 조정 */
-  height: auto; /* 비율 유지 */
+  width: 220px; 
+  height: auto; 
   display: block;
-  margin: 0 auto; /* 가운데 정렬 */
-  cursor: pointer; /* 커서 모양 변경 */
-  transition: transform 0.3s ease; /* 호버 시 애니메이션 효과 */
+  margin: 0 auto;
+  margin-left: 20px; 
+  cursor: pointer; 
+  transition: transform 0.3s ease; 
 }
 .Owner-onboarding-options img:hover {
-  transform: scale(1.05); /* 호버 시 이미지 확대 */
+  transform: scale(1.05); 
 }
 .Owner-onboarding-options img.selected {
   border: 1px solid #145214;
-  border-radius: 100px; /* 테두리를 둥글게 */
+  border-radius: 100px; 
 }
 
-/*이름과 한줄소개*/
+
 .Owner-onboarding-inputs {
   display: flex;
-  flex-direction: column; /* 세로 방향으로 정렬 */
-  align-items: center; /* 가운데 정렬 */
-  gap: 5px; /* 입력 필드 사이 간격 */
-  padding-top: 10px; /* 위쪽 여백 */
+  flex-direction: column; 
+  align-items: center; 
+  gap: 5px; 
+  padding-top: 10px; 
   font-family: 'Shilla_CultureB-Bold';
 }
 .Owner-onboarding-inputs input {
-  width: 250px; /* 입력 필드 너비 */
-  padding: 10px; /* 패딩 */
-  font-size: 0.8em; /* 폰트 크기 */
+  width: 270px; 
+  padding: 10px; 
+  font-size: 0.9em; 
   border: none;
-  border-radius: 5px; /* 둥근 모서리 */
+  border-radius: 19px; 
   font-family: 'Shilla_CultureB-Bold';
 }
 .Owner-onboarding-name-input-container,
 .Owner-onboarding-introduce-input-container {
   display: flex;
-  align-items: center;   /* 세로 가운데 정렬 */
-  gap: 10px;             /* 텍스트와 입력박스 사이 간격 */
+  align-items: center;   
+  gap: 10px;
+  font-size: 1.3em;           
 }
 .Owner-onboarding-submit{
     display: block;
-    margin: 20px auto; /* 버튼을 가운데 정렬 */
-    padding: 10px 20px; /* 버튼 패딩 */
-    font-size: 0.8em; /* 폰트 크기 */
-    color: white; /* 글자 색상 */
-    background-color: #42542c; /* 배경색 */
-    border: none; /* 테두리 제거 */
-    border-radius: 5px; /* 둥근 모서리 */
-    cursor: pointer; /* 커서 모양 변경 */
+    margin: 20px auto; 
+    padding: 10px 20px; 
+    font-size: 1.3em; 
+    color: white;
+    background-color: #42542c; 
+    border: none; 
+    border-radius: 19px; 
+    cursor: pointer; 
     font-family: 'Shilla_CultureB-Bold';
+    transition: transform 0.3s ease; 
 }
 
-/* 개업일 & 주소 입력 영역 */
+.Owner-onboarding-submit:hover{
+  transform: scale(1.05);
+}
+
+
 .Owner-onboarding-date-input-container,
 .Owner-onboarding-address-input-container {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 1.3em; 
 }
 
 .Owner-onboarding-date-input,
 .Owner-onboarding-address-input {
   width: 250px;
   padding: 10px;
-  font-size: 0.9em;
+  font-size: 1.3em;
   border: none;
-  border-radius: 5px;
+  border-radius: 19px;
   font-family: 'Shilla_CultureB-Bold';
 }
 
-/* 카테고리 버튼 선택 영역 */
+
 .Owner-onboarding-category-input-container {
   display: flex;
   align-items: center;
   gap: 10px;
-  justify-content: flex-start;
+  justify-content: flex-start; 
+}
+
+.Owner-onboarding-category-input-container p{
+  font-size: 1.3em;
 }
 
 .Owner-onboarding-category-buttons {
   display: flex;
   gap: 10px;
+  font-size: 0.9em; 
 }
 
 .category-button {
   padding: 8px 16px;
-  font-size: 0.9em;
+  font-size: 1.3em;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 19px;
   background-color: #f0f0f0;
   font-family: 'Shilla_CultureB-Bold';
   cursor: pointer;
