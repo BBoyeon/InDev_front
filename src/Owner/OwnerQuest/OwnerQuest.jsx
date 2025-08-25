@@ -73,7 +73,9 @@ const OwnerQuest = () => {
 }, []);
  
 
-  useEffect(() => {             //손님이 요청한 의뢰
+ 
+
+ useEffect(() => {             //손님이 요청한 의뢰
     const fetchRequests = async () => {
       try {
         const response = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`); 
@@ -87,6 +89,7 @@ const OwnerQuest = () => {
 
     fetchRequests();
   }, []);
+
 
 
   // --- 서버로 미션 생성 ---
