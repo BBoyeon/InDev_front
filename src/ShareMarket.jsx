@@ -1,5 +1,6 @@
 // src/ShareMarket/ShareMarket.jsx
 import React, { useEffect, useState } from 'react'
+import { useLocation } from "react-router-dom"
 import './ShareMarket.css'
 import axios from 'axios'
 
@@ -13,12 +14,22 @@ const ShareMarket = () => {
   const [posts, setPosts] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
 
-  // 캐릭터 id → 이미지 매핑
-  const characterList = {
+  const location = useLocation()
+
+  // 고객 캐릭터 매핑 (id → 이미지 src)
+  const customerCharacterList = {
     1: "/character/도깨비캐릭터.png",
     2: "/character/여자캐릭터.png",
     3: "/character/남자캐릭터.png",
     4: "/character/고양이캐릭터.png",
+  }
+
+  // 점주 캐릭터 매핑 (store_id → 이미지 src)
+  const storeCharacterList = {
+    5: "/store/주막.png",
+    6: "/store/기와집.png",
+    7: "/store/시장.png",
+    8: "/store/책방.png",
   }
 
   // 게시글 불러오기 + 사용자 정보 복원
@@ -27,14 +38,7 @@ const ShareMarket = () => {
       try {
         const res = await axios.get(`${BASE_URL}/post/`)
         console.log("서버에서 불러온 게시글:", res.data)
-
-        // 서버 응답(customer) → 프론트 기대(customer_id) 로 normalize
-        const normalized = res.data.map(p => ({
-          ...p,
-          customer_id: p.customer,  // 서버에서 customer(pk)만 주니까 customer_id로 맞춰줌
-        }))
-
-        setPosts(normalized)
+        setPosts(res.data)
       } catch (err) {
         console.error("게시글 불러오기 실패:", err)
       }
@@ -42,24 +46,39 @@ const ShareMarket = () => {
 
     fetchPosts()
 
-    // 로컬스토리지에서 사용자 정보 복원
-    const customerId = localStorage.getItem("currentCustomerId")
-    const customer = localStorage.getItem("currentCustomer")
-    if (customerId && customer) {
-      const parsed = JSON.parse(customer)
-      console.log("로컬 currentUser:", parsed)
-      setCurrentUser({
-        id: Number(parsed.customer_id),   // 숫자로 변환 (타입 불일치 방지)
-        name: parsed.nickname,
-        character: characterList[parsed.character],
-        characterId: parsed.character,
-      })
-    } else {
-      console.warn("로컬스토리지에 고객 정보가 없음")
-    }
-  }, [])
+    // URL 기반 역할 판별
+    const pathname = location.pathname
 
-  // 게시글 작성 (FormData 사용)
+    if (pathname.includes("owner")) {
+      const store = localStorage.getItem("currentStore")
+      if (store) {
+        const parsed = JSON.parse(store)
+        console.log("로컬 currentStore:", parsed)
+        setCurrentUser({
+          role: "store",
+          id: Number(parsed.store_id),
+          name: parsed.store_name,
+          characterId: parsed.store_id, // 매핑 키로 store_id 사용
+        })
+      }
+    } else if (pathname.includes("customer")) {
+      const customer = localStorage.getItem("currentCustomer")
+      if (customer) {
+        const parsed = JSON.parse(customer)
+        console.log("로컬 currentCustomer:", parsed)
+        setCurrentUser({
+          role: "customer",
+          id: Number(parsed.customer_id),
+          name: parsed.nickname,
+          characterId: parsed.character, // 매핑 키로 character id 사용
+        })
+      }
+    } else {
+      console.warn("URL에 owner/customer 키워드가 없음 → 사용자 role 판별 불가")
+    }
+  }, [location.pathname])
+
+  // 게시글 작성
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!title || !neighborhood || !content) {
@@ -76,9 +95,15 @@ const ShareMarket = () => {
       formData.append("title", title)
       formData.append("content", content)
       formData.append("neighborhood", neighborhood)
-      formData.append("customer_id", currentUser.id)
+
+      if (currentUser.role === "customer") {
+        formData.append("customer_id", currentUser.id)
+      } else if (currentUser.role === "store") {
+        formData.append("store_id", currentUser.id)
+      }
+
       if (image) {
-        formData.append("image", image)  // ✅ 파일 객체 추가
+        formData.append("image", image)
       }
 
       console.log("게시글 작성 formData:", [...formData])
@@ -87,15 +112,7 @@ const ShareMarket = () => {
         headers: { "Content-Type": "multipart/form-data" },
       })
 
-      const newPost = {
-        ...res.data,
-        customer_name: currentUser.name,
-        customer_id: currentUser.id,            // 새 글도 동일하게 customer_id 보장
-        customer_character: currentUser.characterId,
-      }
-
-      setPosts([newPost, ...posts])
-
+      setPosts([res.data, ...posts])
       alert('공유 완료!')
       setTitle('')
       setNeighborhood('')
@@ -125,19 +142,33 @@ const ShareMarket = () => {
         {posts.map((post) => (
           <div key={post.post_id} className="post">
             <div className="post-header">
-              <img
-                src={characterList[post.customer_character] || "/character/남자캐릭터.png"}
-                alt="character"
-                className="post-profile"
-              />
-              <span className="post-name">{post.customer_name}</span>
+              {post.customer ? (
+                // 고객 게시글
+                <>
+                  <img
+                    src={customerCharacterList[post.customer_character] || "/character/남자캐릭터.png"}
+                    alt="customer-character"
+                    className="post-profile"
+                  />
+                  <span className="post-name">{post.customer_name}</span>
+                </>
+              ) : (
+                // 점주 게시글
+                <>
+                  <img
+                    src={storeCharacterList[post.store] || "/store/주막.png"}
+                    alt="store-character"
+                    className="post-profile"
+                  />
+                  <span className="post-name">{post.name}</span>
+                </>
+              )}
             </div>
 
             <h3>{post.title}</h3>
             <p>{post.neighborhood}</p>
             <p>{post.content}</p>
 
-            {/* ✅ 이미지 표시 */}
             {post.image && (
               <img
                 src={`${BASE_URL}${post.image}`}
@@ -146,10 +177,11 @@ const ShareMarket = () => {
               />
             )}
 
-            {/* ✅ 내 글일 때만 삭제 버튼 */}
-            {post.customer_id === currentUser?.id && (
+            {/* 내 글만 삭제 가능 */}
+            {(post.customer === currentUser?.id && currentUser?.role === "customer") ||
+             (post.store === currentUser?.id && currentUser?.role === "store") ? (
               <button onClick={() => handleDelete(post.post_id)}>삭제</button>
-            )}
+            ) : null}
           </div>
         ))}
       </div>

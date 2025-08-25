@@ -6,68 +6,54 @@ import StoreMap from '../../StoreMap/StoreMap'
 import axios from 'axios'
 
 const OwnerDashboard = () => {
-  // 화면 상태
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
-  // 가게 정보 (API에서 채움)
   const [userInfo, setUserInfo] = useState({
-    name: '손님',
+    name: '',
     profile: '/store/기와집.png',
-    intro: '안녕하세요! 여기는 당신의 가게입니다.',
+    intro: '',
     category: '',
     address: '',
-    openDate: '', // YYYY-MM-DD
+    openDate: '',
   })
 
-  // (데모) 지도 데이터 - 필요 시 API 연동으로 교체
-  const [stores] = useState([
-    { id: 1, name: '한옥 카페', lat: 37.5651, lng: 126.9785, category: '카페', address: '서울 중구 을지로' },
-    { id: 2, name: '단골 분식', lat: 37.5668, lng: 126.9822, category: '분식', address: '서울 중구 충무로' },
-    { id: 3, name: '마실 주막', lat: 37.5635, lng: 126.9760, category: '주점', address: '서울 중구 덕수궁로' },
-  ])
-
-  // === API로 가게 정보 불러오기 ===
   useEffect(() => {
     const fetchStore = async () => {
       try {
         setLoading(true)
         setError('')
 
-        // 온보딩에서 저장한 스토어 ID
-        const storedId = localStorage.getItem('user_pk') || localStorage.getItem('store_id')
-        if (!storedId) {
-          setError('가게 ID를 찾을 수 없어요. 온보딩을 먼저 완료해주세요.')
+        // ✅ OwnerOnboarding에서 저장한 currentStore 불러오기
+        const local = localStorage.getItem('currentStore')
+        if (!local) {
+          setError('가게 정보를 찾을 수 없어요. 온보딩을 먼저 완료해주세요.')
           setLoading(false)
           return
         }
+        const parsed = JSON.parse(local)
 
-        // (인증 필요하면 Authorization 헤더 추가)
-        // const token = localStorage.getItem('access_token')
-        // const headers = token ? { Authorization: `Bearer ${token}` } : {}
-        const headers = {}
+        // 일단 로컬스토리지 정보로 초기화
+        setUserInfo({
+          name: parsed.name,
+          profile: parsed.character || '/store/기와집.png',
+          intro: parsed.introduce || '안녕하세요! 여기는 당신의 가게입니다.',
+          category: parsed.category,
+          address: parsed.address || '',
+          openDate: parsed.openingDate || '',
+        })
 
-        const res = await axios.get(`https://indev-project.p-e.kr/store/${storedId}/`, { headers })
+        // 서버에서 최신 정보 불러오기 (선택적)
+        const res = await axios.get(`https://indev-project.p-e.kr/store/${parsed.store_id}/`)
         const data = res.data || {}
 
-        // 서버 필드 매핑
-        const name = data.name ?? '손님'
-        const intro = data.intro ?? '안녕하세요! 여기는 당신의 가게입니다.'   // 🔑 intro 사용
-        const address = data.address ?? ''
-        const categoryName = data.category_name ?? data.category ?? ''         // 서버 구현에 따라 문자열/숫자일 수 있음
-        const openDate = data.open_date ?? ''                                  // YYYY-MM-DD
-        const profile =
-          data.image_url ||
-          localStorage.getItem('character') ||
-          '/store/기와집.png'
-
         setUserInfo({
-          name,
-          profile,
-          intro,
-          category: categoryName,
-          address,
-          openDate,
+          name: data.name ?? parsed.name,
+          profile: parsed.character || '/store/기와집.png',
+          intro: data.introduce ?? parsed.introduce,
+          category: data.category ?? parsed.category,
+          address: data.address ?? parsed.address,
+          openDate: data.openingDate ?? parsed.openingDate,
         })
       } catch (e) {
         console.error('가게 정보 로드 실패:', e)
@@ -80,28 +66,14 @@ const OwnerDashboard = () => {
     fetchStore()
   }, [])
 
-  // === (선택) AI 이미지 모달 ===
-  const [showImageModal, setShowImageModal] = useState(false)
-  const [prompt, setPrompt] = useState('')
-  const handleOpenModal = () => setShowImageModal(true)
-  const handleCloseModal = () => { setShowImageModal(false); setPrompt('') }
-  const handleGenerate = () => {
-    if (!prompt.trim()) { alert('프롬프트를 입력해주세요!'); return }
-    console.log('이미지 생성 요청:', prompt)
-    alert(`"${prompt}" 로 이미지 생성 요청! (추후 구현 예정)`)
-    handleCloseModal()
-  }
-
   return (
     <div className='owner-dashboard'>
       <OwnerAppHeader />
 
       <div className="dashboard-container">
-        {/* 로딩/에러 */}
         {loading && <p className="loading-text">가게 정보를 불러오는 중...</p>}
         {!!error && !loading && <p className="error-text">오류: {error}</p>}
 
-        {/* 가게 프로필 카드 */}
         {!loading && !error && (
           <div className="dashboard-userinfo">
             <img src={userInfo.profile} alt="프로필" className="profile-img" />
@@ -114,18 +86,13 @@ const OwnerDashboard = () => {
             {userInfo.openDate && <p className="user-meta">개업일: {userInfo.openDate}</p>}
 
             <p className="user-intro">{userInfo.intro}</p>
-
-            {/* (선택) AI 이미지 생성 버튼 */}
-            <button className="ai-generate-btn" onClick={handleOpenModal}>
-              가게 이미지 생성하기
-            </button>
           </div>
         )}
 
-        {/* 지도 섹션 */}
+        {/* 지도 섹션 (데모용) */}
         <div className="dashboard-map">
           <h3 className="section-title">내 주변 가게</h3>
-          <StoreMap stores={stores} radiusKm={3} />
+          <StoreMap stores={[]} radiusKm={3} />
         </div>
 
         {/* 장식 요소 */}
@@ -134,30 +101,6 @@ const OwnerDashboard = () => {
         <img src="/decorate/산요소.png" alt="산그림" className="owner-deco-3" />
         <img src="/decorate/구름요소2.png" alt="구름요소2" className="owner-deco-4" />
       </div>
-
-      {showImageModal && (
-        <div className='modal-backdrop' onClick={handleCloseModal}>
-          <div className='modal-panel' onClick={(e) => e.stopPropagation()}>
-            <div className='modal-header'>
-              <h2>AI 이미지 생성</h2>
-              <button className='modal-close' onClick={handleCloseModal}>×</button>
-            </div>
-
-            <textarea
-              className='prompt-input'
-              placeholder="프롬프트를 입력하세요. 예) 수제 소스를 사용하는, 매콤달콤한 원조 떡볶이 가게 전단지"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              rows={4}
-            />
-
-            <div className='modal-actions'>
-              <button className='btn-secondary' onClick={handleCloseModal}>취소</button>
-              <button className='btn-primary' onClick={handleGenerate}>생성하기</button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
