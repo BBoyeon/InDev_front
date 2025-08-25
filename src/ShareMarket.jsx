@@ -134,6 +134,7 @@ const ShareMarket = () => {
             </div>
 
             <h3>{post.title}</h3>
+            <p>{post.neighborhood}</p>
             <p>{post.content}</p>
 
             {/* ✅ 이미지 표시 */}

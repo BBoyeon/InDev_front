@@ -1,28 +1,87 @@
+// src/Customer/CustomerQuest/CustomerQuest.jsx
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import './CustomerQuest.css'
 import AppHeader from '../CustomerAppHeader/AppHeader'
 
-const questList = [
-  { title: '○○ 불닭발에서 튤립닭발 먹기', content: '매운 튤립 닭발을 먹고 인증샷 남기기', reward: '스탬프 1개' },
-  { title: '△△ 떡볶이집에서 매운떡볶이 도전하기', content: '가장 매운 단계 도전 성공하기', reward: '음료 1개' },
-  { title: '☆☆ 카페에서 민트초코 음료 마시기', content: '민트초코 라떼 사진 찍기', reward: '포인트 100점' }
-]
-
 const CustomerQuest = () => {
-  const [todayQuest, setTodayQuest] = useState(null)
+  const [todayQuests, setTodayQuests] = useState([]) 
   const [ongoingQuests, setOngoingQuests] = useState([])
   const [selectedQuest, setSelectedQuest] = useState(null)
 
   useEffect(() => {
-    const random = questList[Math.floor(Math.random() * questList.length)]
-    setTodayQuest(random)
+    // 1. localStorage 먼저 확인
+    const savedOngoing = localStorage.getItem("ongoingQuests")
+    const savedToday = localStorage.getItem("todayQuests")
+
+    if (savedOngoing && savedToday) {
+      console.log("✅ localStorage 데이터 복원")
+      setOngoingQuests(JSON.parse(savedOngoing))
+      setTodayQuests(JSON.parse(savedToday))
+      return // ⭐ 서버 요청 아예 안 함
+    }
+
+    // 2. 없을 때만 서버 요청
+    const fetchQuests = async () => {
+      try {
+        const customerId = localStorage.getItem("currentCustomerId")
+        if (!customerId) {
+          console.error("고객 ID가 없습니다. 로그인 또는 회원가입을 먼저 진행하세요.")
+          return
+        }
+
+        const url = `https://indev-project.p-e.kr/mission/assign/${customerId}/`
+        const res = await axios.get(url)
+
+        const assigned = []
+        const ing = []
+
+        res.data.missions.forEach(m => {
+          const quest = {
+            assignId: m.id,
+            id: m.owner_mission.id,
+            title: m.owner_mission.title,
+            content: m.owner_mission.content,
+            reward: m.owner_mission.reward,
+            status: m.status
+          }
+          if (m.status === 'ASSIGNED') assigned.push(quest)
+          if (m.status === 'ING') ing.push(quest)
+        })
+
+        const shuffled = assigned.sort(() => 0.5 - Math.random())
+        const randomThree = shuffled.slice(0, 3)
+
+        setTodayQuests(randomThree)
+        setOngoingQuests(ing)
+
+        // ⭐ 서버에서 가져온 초기 데이터도 저장
+        localStorage.setItem("todayQuests", JSON.stringify(randomThree))
+        localStorage.setItem("ongoingQuests", JSON.stringify(ing))
+      } catch (err) {
+        console.error("퀘스트 불러오기 실패:", err.response?.data || err.message)
+      }
+    }
+
+    fetchQuests()
   }, [])
 
-  const handleAccept = () => {
-    if (todayQuest) {
-      setOngoingQuests([...ongoingQuests, { ...todayQuest, status: '진행 중' }])
-      setTodayQuest(null)
-    }
+  // 3. 변경될 때마다 localStorage 업데이트
+  useEffect(() => {
+    localStorage.setItem("ongoingQuests", JSON.stringify(ongoingQuests))
+    localStorage.setItem("todayQuests", JSON.stringify(todayQuests))
+  }, [ongoingQuests, todayQuests])
+
+  const handleAccept = (quest) => {
+    const reassigned = ongoingQuests.map(q => ({ ...q, status: 'ASSIGNED' }))
+    const newlyAccepted = { ...quest, status: 'ING' }
+
+    setTodayQuests(prev => {
+      const filtered = prev.filter(q => q.id !== quest.id)
+      return [...filtered, ...reassigned]
+    })
+
+    setOngoingQuests([newlyAccepted])
   }
 
   return (
@@ -38,41 +97,48 @@ const CustomerQuest = () => {
           </p>
 
           <div className="customer-mission-list">
-            {todayQuest ? (
-              <div className="customer-mission-hanjul-today">
-                <button 
-                  className="mission-title-button" 
-                  onClick={() => setSelectedQuest(todayQuest)}
-                >
-                  {todayQuest.title}
-                </button>
-                <button onClick={handleAccept} className="customer-accept-button">
-                  수락
-                </button>
-              </div>
+            {todayQuests.length > 0 ? (
+              todayQuests.map((quest) => (
+                <div key={quest.assignId} className="customer-mission-hanjul-today">
+                  <button 
+                    className="mission-title-button" 
+                    onClick={() => setSelectedQuest(quest)}
+                  >
+                    {quest.title}
+                  </button>
+                  <button 
+                    onClick={() => handleAccept(quest)} 
+                    className="customer-accept-button"
+                  >
+                    수락
+                  </button>
+                </div>
+              ))
             ) : (
-              <div className="customer-mission-hanjul-today">오늘의 의뢰를 수락하셨습니다!</div>
+              <div className="customer-mission-hanjul-today">
+                오늘의 의뢰가 없습니다.
+              </div>
             )}
           </div>
         </div>
 
-        {/* 진행 중인 의뢰 */}
+        {/* 나의 도전 의뢰 */}
         <div className="customer-nowquest">
-          <h1 className="customer-nowquest-title">진행 중인 의뢰</h1>
+          <h1 className="customer-nowquest-title">나의 도전 의뢰</h1>
           <div className="customer-mission-list">
             {ongoingQuests.length === 0 ? (
-              <div className="customer-mission-hanjul-ongoing">수락한 의뢰가 없습니다.</div>
+              <div className="customer-mission-hanjul-ongoing">
+                수락한 의뢰가 없습니다.
+              </div>
             ) : (
-              ongoingQuests.map((quest, idx) => (
-                <div key={idx} className="customer-mission-hanjul-ongoing">
+              ongoingQuests.map((quest) => (
+                <div key={quest.assignId} className="customer-mission-hanjul-ongoing">
                   <div>
                     <strong>의뢰 제목 : {quest.title}</strong>
                     <p>내용 : {quest.content}</p>
                     <p>보상 : {quest.reward}</p>
                   </div>
-                  <span className={`quest-status ${quest.status === '완료' ? 'completed' : 'ongoing'}`}>
-                    {quest.status}
-                  </span>
+                  <span className="quest-status ongoing">{quest.status}</span>
                 </div>
               ))
             )}
