@@ -55,3 +55,10 @@
   .store-map-container { height: 360px; }
   .owner-deco-1 { width: 440px; }
 }
+
+.popup-name {
+  font-size: 13px;
+  font-weight: bold;
+  color: #111;
+  padding: 4px 6px;
+}

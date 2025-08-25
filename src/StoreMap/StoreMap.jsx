@@ -90,23 +90,36 @@ export default function StoreMap({ stores = [], radiusKm = 3 }) {
     bounds.extend([userPos.lng, userPos.lat])
 
     nearbyStores.forEach((s) => {
-      const el = document.createElement('div')
+      const el = document.createElement('button')
       el.className = 'store-pin'
-      el.title = s.name
+
+      // ✅ hover용 popup (이름만)
+      const hoverPopup = new mapboxgl.Popup({
+        offset: 24,
+        closeButton: false,
+        closeOnClick: false
+      }).setHTML(`<div class="popup-name">${s.name}</div>`)
+
+      // ✅ 클릭용 popup (상세정보)
+      const clickPopup = new mapboxgl.Popup({ offset: 24 }).setHTML(`
+        <div class="popup">
+          <div class="popup-title">${s.name}</div>
+          <div class="popup-sub">${s.category ?? ''}</div>
+          <div class="popup-addr">${s.address ?? ''}</div>
+          <div class="popup-dist">${s._dist?.toFixed(2)} km</div>
+        </div>
+      `)
 
       const marker = new mapboxgl.Marker({ element: el })
         .setLngLat([s.lng, s.lat])
-        .setPopup(
-          new mapboxgl.Popup({ offset: 24 }).setHTML(`
-            <div class="popup">
-              <div class="popup-title">${s.name}</div>
-              <div class="popup-sub">${s.category ?? ''}</div>
-              <div class="popup-addr">${s.address ?? ''}</div>
-              <div class="popup-dist">${s._dist?.toFixed(2)} km</div>
-            </div>
-          `)
-        )
+        .setPopup(clickPopup) // ✅ 클릭하면 상세 popup
         .addTo(map)
+
+      // ✅ hover 이벤트
+      el.addEventListener('mouseenter', () =>
+        hoverPopup.addTo(map).setLngLat([s.lng, s.lat])
+      )
+      el.addEventListener('mouseleave', () => hoverPopup.remove())
 
       map._storeMarkers.push(marker)
       bounds.extend([s.lng, s.lat])
