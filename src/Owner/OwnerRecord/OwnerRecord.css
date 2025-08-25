@@ -1,14 +1,4 @@
 .owner-record{
-    background-image: url('/image.png'); /* public 폴더 기준 경로 */
-  background-size: cover;       /* 화면에 꽉 차게 */
-  background-position: center;  /* 가운데 정렬 */
-  background-repeat: no-repeat;
-  width: 100vw;
-  height: 100vh;
-  min-height: 100vh;
-  font-family: 'Shilla_CultureB-Bold';
-}
-.customer-record{
   background-image: url('/image.png'); /* public 폴더 기준 경로 */
   background-size: cover;       /* 화면에 꽉 차게 */
   background-position: center;  /* 가운데 정렬 */
@@ -19,30 +9,43 @@
   font-family: 'Shilla_CultureB-Bold';
 }
 
-.customer-timeline {
-  padding: 20px;
+.owner-timeline {
+  width: 100%;
+  max-width: 700px;
+  padding: 30px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+  font-size: 1.2rem;
 }
 
-.customer-timeline h2 {
-  margin-bottom: 16px;
+.owner-timeline h2 {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center; 
 }
 
 .no-posts {
   color: #888;
   font-style: italic;
   margin-top: 20px;
+  padding-top: 30px;
+  font-size: 1.3rem;
+  text-align: center;
 }
 
 .post {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 16px;
+  border: 1px solid #ccc;  
+  border-radius: 10px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .post-header {
   display: flex;
   align-items: center;
+  gap: 10px; 
   margin-bottom: 8px;
 }
 
@@ -51,6 +54,13 @@
   height: 40px;
   border-radius: 50%;
   margin-right: 8px;
+}
+
+.post-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 10px;
 }
 
 .delete-btn {

@@ -32,6 +32,14 @@ const ShareMarket = () => {
     8: "/store/책방.png",
   }
 
+  // 점주 이름 매핑 (store_id → 이름)
+  const storeNameList = {
+    5: "주막",
+    6: "기와집",
+    7: "시장",
+    8: "책방",
+  }
+
   // 게시글 불러오기 + 사용자 정보 복원
   useEffect(() => {
     const fetchPosts = async () => {
@@ -57,8 +65,8 @@ const ShareMarket = () => {
         setCurrentUser({
           role: "store",
           id: Number(parsed.store_id),
-          name: parsed.store_name,
-          characterId: parsed.store_id, // 매핑 키로 store_id 사용
+          name: parsed.name,
+          characterId: parsed.store_id,
         })
       }
     } else if (pathname.includes("customer")) {
@@ -70,7 +78,7 @@ const ShareMarket = () => {
           role: "customer",
           id: Number(parsed.customer_id),
           name: parsed.nickname,
-          characterId: parsed.character, // 매핑 키로 character id 사용
+          characterId: parsed.character,
         })
       }
     } else {
@@ -160,7 +168,7 @@ const ShareMarket = () => {
                     alt="store-character"
                     className="post-profile"
                   />
-                  <span className="post-name">{post.name}</span>
+                  <span className="post-name">{post.store_name || "가게"}</span>
                 </>
               )}
             </div>
