@@ -71,10 +71,10 @@ const OwnerQuest = () => {
   }, []);
 
   // --- 완료 버튼 눌렀을 때 처리 함수
-const handleCompleteRequest = async (ownermissionId) => {
+const handleCompleteRequest = async (missionIds) => {
   try {
     const res = await axios.post(
-      `https://indev-project.p-e.kr/mission/assign/complete/${ownermissionId}/`
+      `https://indev-project.p-e.kr/mission/assign/complete/${missionIds}/`
     );
     console.log("✅ 완료 성공", res.data);
     await fetchRequests();
