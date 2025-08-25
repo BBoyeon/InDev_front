@@ -71,29 +71,68 @@ const OwnerQuest = () => {
     })
   }
 
-  const handleWrite = async(e) => {
-    e.preventDefault()  
-    const response = await axios.post('https://indev-project.p-e.kr/mission/owner-missions/', {
-      title:title,
-      content:content,
-      reward:reward,
-      store: localStorage.getItem('user_pk'),
-      is_active: true
+  const handleWrite = async (e) => {
+  e.preventDefault();
 
-    },{
-        headers: {
-          'Content-Type': 'application/json',
+  const text = (content || "").trim();
+  if (!text) return alert("내용을 입력해주세요.");
 
-          
-        },
-      });
-    if (response.status === 201) {
-      alert('의뢰가 성공적으로 등록되었습니다!'); 
-      window.location.reload();
-    } else {
-      alert('의뢰 등록에 실패했습니다. 다시 시도해주세요.');
-    }
+  // 1) store pk 확보 + 숫자화
+  const raw = localStorage.getItem("user_pk") || localStorage.getItem("store_id");
+  const storeId = Number(raw);
+  if (!storeId) return alert("가게 ID가 없습니다. 온보딩을 먼저 완료해주세요.");
+
+  // 2) store 존재 검증 (없으면 404/400 → 미리 차단)
+  try {
+    await axios.get(`https://indev-project.p-e.kr/store/${storeId}/`);
+  } catch (e) {
+    return alert(`유효하지 않은 가게 ID(${storeId})입니다. 온보딩을 다시 진행해주세요.`);
   }
+
+  // 3) 서버가 받는 최소 스키마만 전송
+  const payload = { store: storeId, content: text, is_active: true };
+
+  // 4) 토큰(필요시)
+  const token = localStorage.getItem("token");
+  const headers = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+
+  const url = "https://indev-project.p-e.kr/mission/owner-missions/";
+
+  try {
+    console.log("[DEBUG] POST", url, payload, headers);
+    const res = await axios.post(url, payload, { headers });
+    if (res.status === 200 || res.status === 201) {
+      alert("의뢰가 성공적으로 등록되었습니다!");
+      setMissions((prev) => [...prev, res.data]); // 서버 응답 사용(중복 key 방지)
+      closeForm();
+    } else {
+      console.log("[DEBUG] unexpected:", res.status, res.data);
+      alert("의뢰 등록에 실패했습니다. 다시 시도해주세요.");
+    }
+  } catch (error) {
+    // 서버가 HTML 500 페이지를 줄 수도 있어 그대로 출력
+    const status = error?.response?.status;
+    const data = error?.response?.data; // 문자열(HTML)일 수도 있음
+    const finalURL =
+      (error?.config?.baseURL || "") + (error?.config?.url || "");
+    console.error("의뢰 작성 실패:", error);
+    console.log("status:", status);
+    console.log("data:", data);
+    console.log("finalURL:", finalURL);
+
+    // 500이면 내부 예외 → 백엔드 로그 확인 필요
+    alert(
+      `의뢰 등록 실패 (status: ${status ?? "unknown"})\n` +
+      `요청 URL: ${finalURL}\n` +
+      `응답: ${typeof data === "string" ? data.slice(0, 200) + "..." : JSON.stringify(data)}`
+    );
+  }
+};
+
 
 
 
