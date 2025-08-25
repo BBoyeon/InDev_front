@@ -1,8 +1,8 @@
 
 .customer-dashboard{
-  background-image: url('/image.png'); /* public 폴더 기준 경로 */
-  background-size: cover;       /* 화면에 꽉 차게 */
-  background-position: center;  /* 가운데 정렬 */
+  background-image: url('/image.png'); 
+  background-size: cover;      
+  background-position: center; 
   background-repeat: no-repeat;
   max-width: 100vw;
   width: 100vw;
@@ -20,15 +20,16 @@
   grid-template-columns: 1fr 2fr 1fr;
   gap: 40px;
   width: 100%;
-  max-width: 100%;         /* 전체 폭 꽉 채움 */
-  padding: 40px 60px;      /* 좌우 여백만 살짝 */
+  max-width: 100%;       
+  padding: 40px 60px;   
   box-sizing: border-box;
 }
 
 .dashboard-userinfo {
-  width: 290px;
+  width: 300px;
   background-color: #fff;
   padding: 20px;
+  margin-top: 80px;
   border: 2px solid #333;
   border-radius: 12px;
   text-align: center;
@@ -59,6 +60,7 @@
   flex: 1;
   background-color: #fafafa;
   padding: 30px;
+  margin-top: 80px;
   border-radius: 10px;
   min-height: 300px;
   text-align: center;
@@ -69,6 +71,7 @@
 
 /* 오른쪽: 광고 배너 */
 .dashboard-banner {
+  margin-top: 80px;
   width: 200px;
   padding: 10px;
 }

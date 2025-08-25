@@ -50,6 +50,8 @@ const CustomerOnboarding = () => {
       localStorage.setItem("currentCustomerId", customerId)
       localStorage.setItem("currentCustomer", JSON.stringify(response.data))
 
+      alert(`회원가입이 완료되었습니다. 환영합니다, ${payload.nickname} 님!`)
+
       // 대시보드 페이지로 이동
       navigate(`/customer-dashboard/${customerId}`)
     } catch (err) {
@@ -59,6 +61,7 @@ const CustomerOnboarding = () => {
     } finally {
       setLoading(false)
     }
+
   }
 
   return (
