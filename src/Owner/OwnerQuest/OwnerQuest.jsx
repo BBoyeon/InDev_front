@@ -5,27 +5,12 @@ import axios from 'axios'
 
 const OwnerQuest = () => {
   // --- 나의 의뢰(등록한 미션) ---
+  const user_pk = localStorage.getItem("user_pk")
   const [missions, setMissions] = useState([]);
+  const [missionIds, setMissionIds] = useState([]);
 
   // --- 요청된 의뢰들(손님 요청) ---
   const [requests, setRequests] = useState([]);
-
-  // 앱 로드 시 localStorage에서 완료 내역을 불러와서 requests에 반영
-  useEffect(() => {
-    const stored = localStorage.getItem('completedRequests')
-    if (!stored) return
-    try {
-      const completedArr = JSON.parse(stored) // [{id, title, requester, completed:true}, ...]
-      if (Array.isArray(completedArr)) {
-        setRequests(prev =>
-          prev.map(r => {
-            const hit = completedArr.find(c => c.id === r.id)
-            return hit ? { ...r, completed: true } : r
-          })
-        )
-      }
-    } catch (_) {}
-  }, [])
 
   // --- 상세 모달 ---
   const [selectedMission, setSelectedMission] = useState(null)
@@ -48,62 +33,55 @@ const OwnerQuest = () => {
     const completed = updatedRequests.filter(r => r.completed)
     localStorage.setItem('completedRequests', JSON.stringify(completed))
   }
-  
-  //유저pk 가져오기
-  const user_pk = localStorage.getItem("user_pk")  
 
-  useEffect(() => {         //완료누루기
+  // --- 요청 목록을 필터링해서 가져오는 함수
   const fetchRequests = async () => {
     try {
       const response = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`);
-      // is_active가 false 이고 has_customer가 true인 요청만 필터링
-      const filtered = response.data.filter(req => req.is_active === false && req.has_customer === true);
+      // is_active가 false이고 customer_id가 null이 아닌 것만 필터링
+      const filtered = response.data.filter(req => req.is_active === false && req.customer_id !== null);
       setRequests(filtered);
     } catch (error) {
       console.error('요청 목록을 가져오는 데 실패했습니다:', error);
     }
   };
 
-  fetchRequests();
-}, []);
-
-
-
-
- 
-  useEffect(() => {               //내가 작성한 의뢰
-  const fetchMissions = async () => {
-    try {
-       const res = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`);
-      console.log("불러온 미션:", res.data);
-      setMissions(res.data); 
-    } catch (err) {
-      console.error("미션 불러오기 실패:", err);
-    }
-  };
-
-  fetchMissions();
-}, []);
- 
-
- 
-
- useEffect(() => {             //손님이 요청한 의뢰
-    const fetchRequests = async () => {
-      try {
-        const response = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`); 
-        //setRequests(response.data);
-        const filtered = response.data.filter((req) => req.is_active === false);
-        setRequests(filtered);
-      } catch (error) {
-        console.error('요청 목록을 가져오는 데 실패했습니다:', error);
-      }
-    };
-
+  // 초기 로드 시 요청 목록 호출
+  useEffect(() => {
     fetchRequests();
   }, []);
 
+  // --- 나의 의뢰 목록 불러오기
+  useEffect(() => {
+    const fetchMissions = async () => {
+      try {
+        const res = await axios.get(`https://indev-project.p-e.kr/mission/owner-missions/store/${user_pk}/`);
+        setMissions(res.data);
 
+        // 미션들의 id만 뽑아서 missionIds 상태에 저장
+        const ids = res.data.map(mission => mission.id);
+        setMissionIds(ids);
+
+      } catch (err) {
+        console.error("미션 불러오기 실패:", err);
+      }
+    };
+
+    fetchMissions();
+  }, []);
+
+  // --- 완료 버튼 눌렀을 때 처리 함수
+const handleCompleteRequest = async (ownermissionId) => {
+  try {
+    const res = await axios.post(
+      `https://indev-project.p-e.kr/mission/assign/complete/${ownermissionId}/`
+    );
+    console.log("✅ 완료 성공", res.data);
+    await fetchRequests();
+  } catch (error) {
+    console.error("❌ 미션 완료 실패:", error.response?.data || error.message);
+  }
+};
 
   // --- 서버로 미션 생성 ---
   const handleWrite = async (e) => {
@@ -214,7 +192,7 @@ const OwnerQuest = () => {
                   ) : (
                     <button
                       className='btn-complete'
-                      onClick={() => handleCompleteRequest(req.id)}
+                      onClick={() => handleCompleteRequest(req.id)}  // ownermission_id로 완료 요청
                     >
                       완료
                     </button>
