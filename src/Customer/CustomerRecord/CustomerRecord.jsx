@@ -1,4 +1,3 @@
-// src/Customer/CustomerRecord/CustomerRecord.jsx
 import React, { useEffect, useState } from 'react'
 import './CustomerRecord.css'
 import AppHeader from '../CustomerAppHeader/AppHeader'
@@ -15,19 +14,19 @@ const characterList = {
 
 const CustomerRecord = () => {
   const [myPosts, setMyPosts] = useState([])
-  const currentUserId = Number(localStorage.getItem('currentCustomerId'))  // ✅ 숫자로 통일
+  const currentUserId = Number(localStorage.getItem('currentCustomerId'))  //숫자로 통일
 
   useEffect(() => {
     const fetchMyPosts = async () => {
       if (!currentUserId) return
       try {
         const res = await axios.get(`${BASE_URL}/post/`)
-        // ✅ 서버 응답 normalize
+        //서버 응답 normalize
         const normalized = res.data.map(p => ({
           ...p,
           customer_id: p.customer, // 서버 응답 필드 → 프론트 통일
         }))
-        // ✅ 내 글만 필터링
+        //내 글만 필터링
         const filtered = normalized.filter(p => p.customer_id === currentUserId)
         setMyPosts(filtered)
       } catch (err) {
@@ -38,7 +37,7 @@ const CustomerRecord = () => {
     fetchMyPosts()
   }, [currentUserId])
 
-  // 🔹 삭제 함수
+  //삭제 함수
   const handleDelete = async (postId) => {
     try {
       await axios.delete(`${BASE_URL}/post/${postId}/`)
@@ -75,7 +74,7 @@ const CustomerRecord = () => {
                   <img src={`${BASE_URL}${post.image}`} alt="첨부 이미지" className="post-image" />
                 )}
 
-                {/* ✅ 내 글일 때만 삭제 버튼 */}
+                {/*내 글일 때만 삭제 버튼*/}
                 {post.customer_id === currentUserId && (
                   <button 
                     className="delete-btn"
