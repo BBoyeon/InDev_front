@@ -71,63 +71,30 @@ const OwnerQuest = () => {
     })
   }
 
-const handleWrite = async () => {
-  try {
-    const text = (content || '').trim();
-    if (!text) {
-      alert('내용을 입력해주세요.');
-      return;
-    }
+  const handleWrite = async(e) => {
+    e.preventDefault()  
+    const response = await axios.post('`https://indev-project.p-e.kr/mission/owner-missions', {
+      title:title,
+      content:content,
+      reward:reward,
+      store: localStorage.getItem('user_pk'),
+      is_active: true
 
-    const storeRaw = localStorage.getItem('user_pk') || localStorage.getItem('store_id');
-    const storeId = Number(storeRaw);
-    if (!storeId) {
-      alert('가게 ID가 없습니다. 온보딩을 먼저 완료해주세요.');
-      return;
-    }
+    },{
+        headers: {
+          'Content-Type': 'application/json',
 
-    const url = 'https://indev-project.p-e.kr/mission/owner-missions/';
-
-    // ✅ 토큰 포함 (필요한 경우)
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    };
-
-    const payload = { store: storeId, content: text, is_active: true };
-
-    console.log('[DEBUG] POST', url, payload, headers);
-    const res = await axios.post(url, payload, { headers });
-
-    if (res.status === 201 || res.status === 200) {
-      setMissions(prev => [...prev, res.data]); // 서버 응답(아이디 포함) 사용
-      closeForm();
-      alert('의뢰가 성공적으로 작성되었습니다.');
+          
+        },
+      });
+    if (response.status === 201) {
+      alert('의뢰가 성공적으로 등록되었습니다!'); 
+      window.location.reload();
     } else {
-      console.log('unexpected status:', res.status, res.data);
-      alert('의뢰 작성에 실패했습니다. 다시 시도해주세요.');
+      alert('의뢰 등록에 실패했습니다. 다시 시도해주세요.');
     }
-  } catch (error) {
-    const status = error?.response?.status;
-    const data = error?.response?.data; // 지금은 HTML일 수 있음 (DRF 디버그 템플릿)
-    const finalURL = error?.config?.baseURL
-      ? error.config.baseURL + error.config.url
-      : error?.config?.url;
-
-    console.error('의뢰 작성 실패:', error);
-    console.log('status:', status);
-    console.log('data:', data);
-    console.log('finalURL:', finalURL);
-
-    alert(
-      `의뢰 작성 중 오류가 발생했습니다.\n` +
-      (status ? `status: ${status}\n` : '') +
-      '자세한 내용은 콘솔을 확인해주세요.'
-    );
   }
-};
+
 
 
 
