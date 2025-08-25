@@ -26,19 +26,12 @@ const ShareMarket = () => {
 
   // 점주 캐릭터 매핑 (store_id → 이미지 src)
   const storeCharacterList = {
-    5: "/store/주막.png",
-    6: "/store/기와집.png",
-    7: "/store/시장.png",
-    8: "/store/책방.png",
+    1: "/store/주막.png",
+    2: "/store/기와집.png",
+    3: "/store/시장.png",
+    4: "/store/책방.png",
   }
 
-  // 점주 이름 매핑 (store_id → 이름)
-  const storeNameList = {
-    5: "주막",
-    6: "기와집",
-    7: "시장",
-    8: "책방",
-  }
 
   // 게시글 불러오기 + 사용자 정보 복원
   useEffect(() => {
@@ -66,7 +59,7 @@ const ShareMarket = () => {
           role: "store",
           id: Number(parsed.store_id),
           name: parsed.name,
-          characterId: parsed.store_id,
+          characterId: parsed.character,
         })
       }
     } else if (pathname.includes("customer")) {
@@ -164,7 +157,7 @@ const ShareMarket = () => {
                 // 점주 게시글
                 <>
                   <img
-                    src={storeCharacterList[post.store] || "/store/주막.png"}
+                    src={storeCharacterList[post.store_character] || "/store/주막.png"}
                     alt="store-character"
                     className="post-profile"
                   />

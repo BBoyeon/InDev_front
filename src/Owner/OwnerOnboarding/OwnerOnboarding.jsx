@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const characterList = [
-  { id: 5, src: "/store/주막.png", alt: "주막" },
-  { id: 6, src: "/store/기와집.png", alt: "기와집" },
-  { id: 7, src: "/store/시장.png", alt: "시장" },
-  { id: 8, src: "/store/책방.png", alt: "책방" },
+  { id: 1, src: "/store/주막.png", alt: "주막" },
+  { id: 2, src: "/store/기와집.png", alt: "기와집" },
+  { id: 3, src: "/store/시장.png", alt: "시장" },
+  { id: 4, src: "/store/책방.png", alt: "책방" },
 ]
 
 const categoryList = [
@@ -43,6 +43,7 @@ const OwnerOnboarding = () => {
       name: nameTrimmed,
       address: addressTrimmed,
       category: Number(category),
+      character: characterList[selectedIdx]?.id,
     }
 
     try {
