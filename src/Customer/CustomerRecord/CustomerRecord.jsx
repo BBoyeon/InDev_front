@@ -69,6 +69,7 @@ const CustomerRecord = () => {
                   <span className="post-name">{post.customer_name}</span>
                 </div>
                 <h3>{post.title}</h3>
+                <p>{post.neighborhood}</p>
                 <p className="post-content">{post.content}</p>
                 {post.image && (
                   <img src={`${BASE_URL}${post.image}`} alt="첨부 이미지" className="post-image" />

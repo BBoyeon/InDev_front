@@ -10,18 +10,6 @@ const CustomerQuest = () => {
   const [selectedQuest, setSelectedQuest] = useState(null)
 
   useEffect(() => {
-    // 1. localStorage 먼저 확인
-    const savedOngoing = localStorage.getItem("ongoingQuests")
-    const savedToday = localStorage.getItem("todayQuests")
-
-    if (savedOngoing && savedToday) {
-      console.log("✅ localStorage 데이터 복원")
-      setOngoingQuests(JSON.parse(savedOngoing))
-      setTodayQuests(JSON.parse(savedToday))
-      return // ⭐ 서버 요청 아예 안 함
-    }
-
-    // 2. 없을 때만 서버 요청
     const fetchQuests = async () => {
       try {
         const customerId = localStorage.getItem("currentCustomerId")
@@ -38,8 +26,8 @@ const CustomerQuest = () => {
 
         res.data.missions.forEach(m => {
           const quest = {
-            assignId: m.id,
-            id: m.owner_mission.id,
+            id: m.owner_mission.id,       // owner mission id
+            assignId: m.id,               // assign id도 저장
             title: m.owner_mission.title,
             content: m.owner_mission.content,
             reward: m.owner_mission.reward,
@@ -49,15 +37,12 @@ const CustomerQuest = () => {
           if (m.status === 'ING') ing.push(quest)
         })
 
+        // 오늘의 의뢰는 랜덤 3개만
         const shuffled = assigned.sort(() => 0.5 - Math.random())
         const randomThree = shuffled.slice(0, 3)
 
         setTodayQuests(randomThree)
         setOngoingQuests(ing)
-
-        // ⭐ 서버에서 가져온 초기 데이터도 저장
-        localStorage.setItem("todayQuests", JSON.stringify(randomThree))
-        localStorage.setItem("ongoingQuests", JSON.stringify(ing))
       } catch (err) {
         console.error("퀘스트 불러오기 실패:", err.response?.data || err.message)
       }
@@ -66,22 +51,40 @@ const CustomerQuest = () => {
     fetchQuests()
   }, [])
 
-  // 3. 변경될 때마다 localStorage 업데이트
-  useEffect(() => {
-    localStorage.setItem("ongoingQuests", JSON.stringify(ongoingQuests))
-    localStorage.setItem("todayQuests", JSON.stringify(todayQuests))
-  }, [ongoingQuests, todayQuests])
+  const handleAccept = async (quest) => {
+    try {
+      const customerId = localStorage.getItem("currentCustomerId")
+      if (!customerId) {
+        alert("고객 ID가 없습니다. 로그인 또는 회원가입을 먼저 진행하세요.")
+        return
+      }
 
-  const handleAccept = (quest) => {
-    const reassigned = ongoingQuests.map(q => ({ ...q, status: 'ASSIGNED' }))
-    const newlyAccepted = { ...quest, status: 'ING' }
+      // ✅ API 요청
+      const url = `https://indev-project.p-e.kr/mission/assign/${customerId}/start/${quest.id}/`
+      await axios.post(url)
 
-    setTodayQuests(prev => {
-      const filtered = prev.filter(q => q.id !== quest.id)
-      return [...filtered, ...reassigned]
-    })
+      // ✅ 성공 시 상태 업데이트
+      const reassigned = ongoingQuests.map(q => ({ ...q, status: 'ASSIGNED' }))
+      const newlyAccepted = { ...quest, status: 'ING' }
 
-    setOngoingQuests([newlyAccepted])
+      const updatedToday = [
+        ...todayQuests.filter(q => q.id !== quest.id),
+        ...reassigned
+      ]
+      const updatedOngoing = [newlyAccepted]
+
+      setTodayQuests(updatedToday)
+      setOngoingQuests(updatedOngoing)
+
+      // ✅ 로컬스토리지에도 저장
+      localStorage.setItem("todayQuests", JSON.stringify(updatedToday))
+      localStorage.setItem("ongoingQuests", JSON.stringify(updatedOngoing))
+
+      console.log("미션 수락 성공:", quest.title)
+    } catch (err) {
+      console.error("미션 수락 실패:", err.response?.data || err.message)
+      alert("미션 수락에 실패했습니다. 다시 시도해주세요.")
+    }
   }
 
   return (
@@ -99,7 +102,7 @@ const CustomerQuest = () => {
           <div className="customer-mission-list">
             {todayQuests.length > 0 ? (
               todayQuests.map((quest) => (
-                <div key={quest.assignId} className="customer-mission-hanjul-today">
+                <div key={quest.id} className="customer-mission-hanjul-today">
                   <button 
                     className="mission-title-button" 
                     onClick={() => setSelectedQuest(quest)}
@@ -131,8 +134,8 @@ const CustomerQuest = () => {
                 수락한 의뢰가 없습니다.
               </div>
             ) : (
-              ongoingQuests.map((quest) => (
-                <div key={quest.assignId} className="customer-mission-hanjul-ongoing">
+              ongoingQuests.map((quest, idx) => (
+                <div key={idx} className="customer-mission-hanjul-ongoing">
                   <div>
                     <strong>의뢰 제목 : {quest.title}</strong>
                     <p>내용 : {quest.content}</p>
