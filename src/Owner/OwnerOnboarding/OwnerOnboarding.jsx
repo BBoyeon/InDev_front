@@ -28,7 +28,7 @@ const OwnerOnboarding = () => {
 
   const navigate = useNavigate()
 
-  const handleSubmit = async (e) => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const nameTrimmed = storeName.trim();
@@ -42,32 +42,62 @@ const OwnerOnboarding = () => {
   const payload = {
     name: nameTrimmed,
     address: addressTrimmed,
-    category: Number(category),
+    category: Number(category), // 서버가 1~4를 실제로 가지고 있어야 함
   };
 
   try {
-    console.log("POST /store/ payload:", payload, { types: {
-      name: typeof payload.name, address: typeof payload.address, category: typeof payload.category
-    }});
+    console.log("[DEBUG] POST /store/ payload =", payload);
     const res = await axios.post("https://indev-project.p-e.kr/store/", payload, {
       headers: { "Content-Type": "application/json" },
     });
-    const data = res.data;
 
+    console.log("[DEBUG] POST status =", res.status, "data =", res.data);
+
+    // 201 Created가 정상. 200만 체크하면 놓칠 수 있음
+    if (!(res.status === 201 || res.status === 200)) {
+      alert(`생성 실패(예상 외 상태 코드): ${res.status}`);
+      return;
+    }
+
+    const data = res.data;
+    const storeId = data?.store_id;
+
+    if (!storeId) {
+      alert("응답에 store_id가 없습니다. 서버 응답 형식을 확인하세요.");
+      console.log("[DEBUG] unexpected response:", data);
+      return;
+    }
+
+    // 🔍 생성 검증: 바로 GET /store/{id}/로 확인
+    try {
+      const verify = await axios.get(`https://indev-project.p-e.kr/store/${storeId}/`);
+      console.log("[DEBUG] verify GET status =", verify.status, "data =", verify.data);
+      if (!(verify.status === 200 || verify.status === 204)) {
+        alert("생성 검증 실패: 방금 만든 가게를 조회할 수 없습니다.");
+        return;
+      }
+    } catch (e) {
+      console.log("[DEBUG] verify GET failed:", e?.response?.status, e?.response?.data);
+      alert("생성 검증 실패: 방금 만든 가게를 조회할 수 없습니다.");
+      return;
+    }
+
+    // ✅ 정말로 생성된 게 확인된 경우에만 저장/이동
     alert(`회원가입이 완료되었습니다. 환영합니다, ${data.name}님!`);
-    localStorage.setItem("user_pk", data.store_id);
+    localStorage.setItem("user_pk", storeId);
     localStorage.setItem("store_name", data.name);
     localStorage.setItem("store_category", String(payload.category));
     localStorage.setItem("character", characterList[selectedIdx]?.src || "");
     localStorage.setItem("introduce", introduce);
     localStorage.setItem("opening_date", openingDate);
-    
-    navigate('/owner-dashboard');
+
+    navigate("/owner-dashboard");
   } catch (error) {
     console.error("회원가입 실패:", error);
     console.log("status:", error?.response?.status);
-    console.log("data:", error?.response?.data); // ← 여기에 필드별 에러가 정확히 찍힘
-    alert(`회원가입 실패: ${error?.response?.data ? JSON.stringify(error.response.data) : '콘솔을 확인하세요.'}`);
+    console.log("data:", error?.response?.data);
+    const msg = error?.response?.data ? JSON.stringify(error.response.data) : "콘솔을 확인하세요.";
+    alert(`회원가입 실패: ${msg}`);
   }
 };
 

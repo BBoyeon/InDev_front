@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import './OwnerQuest.css'
 import OwnerAppHeader from '../OwnerAppHeader/OwnerAppHeader'
+import axios from 'axios'
 
 const OwnerQuest = () => {
   // --- 나의 의뢰(등록한 미션) ---
-  const [missions, setMissions] = useState([
-    { id: 1, title: '첫 방문 웰컴 미션', content: "음료 픽업 시 '마실 왔어요'라고 말하기", reward: '스탬프 1개' },
-    { id: 2, title: '시그니처 음료 인증샷', content: '가게 로고가 보이게 컵 인증샷 찍기', reward: '쿠키 1EA' },
-    { id: 3, title: '사장님에게 한마디', content: "계산 시 '오늘도 번창하세요'라고 말해보기", reward: '' },
-  ])
+ const [missions, setMissions] = useState([]);
 
   // --- 요청된 의뢰들(손님 요청) ---
   const [requests, setRequests] = useState([
@@ -74,58 +71,65 @@ const OwnerQuest = () => {
     })
   }
 
- const handleWrite = async () => {
+const handleWrite = async () => {
   try {
-    if (!content.trim()) {
-      alert("내용을 입력해주세요.");
+    const text = (content || '').trim();
+    if (!text) {
+      alert('내용을 입력해주세요.');
       return;
     }
 
-    // 🔑 로컬스토리지에서 store id 꺼내오기
-    const storeId = Number(localStorage.getItem("user_pk") || localStorage.getItem("store_id"));
+    const storeRaw = localStorage.getItem('user_pk') || localStorage.getItem('store_id');
+    const storeId = Number(storeRaw);
     if (!storeId) {
-      alert("가게 ID를 찾을 수 없습니다. 온보딩을 먼저 완료해주세요.");
+      alert('가게 ID가 없습니다. 온보딩을 먼저 완료해주세요.');
       return;
     }
 
-    // 서버가 기대하는 JSON payload
-    const payload = {
-      store: storeId,
-      content: content.trim(),
-      is_active: true,
-    };
+    const url = 'https://indev-project.p-e.kr/mission/owner-missions/';
 
-    const token = localStorage.getItem("token"); // 인증 필요시
+    // ✅ 토큰 포함 (필요한 경우)
+    const token = localStorage.getItem('token');
     const headers = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
 
-    const response = await axios.post(
-      "https://indev-project.p-e.kr/mission/owner-missions/", // ← 실제 엔드포인트 확인!
-      payload,
-      { headers }
-    );
+    const payload = { store: storeId, content: text, is_active: true };
 
-    if (response.status === 201 || response.status === 200) {
-      alert("의뢰가 성공적으로 작성되었습니다.");
-      // 서버 응답 데이터(response.data)에 id 포함 → 목록 업데이트
-      setMissions((prev) => [...prev, response.data]);
+    console.log('[DEBUG] POST', url, payload, headers);
+    const res = await axios.post(url, payload, { headers });
+
+    if (res.status === 201 || res.status === 200) {
+      setMissions(prev => [...prev, res.data]); // 서버 응답(아이디 포함) 사용
       closeForm();
+      alert('의뢰가 성공적으로 작성되었습니다.');
     } else {
-      alert("의뢰 작성에 실패했습니다. 다시 시도해주세요.");
+      console.log('unexpected status:', res.status, res.data);
+      alert('의뢰 작성에 실패했습니다. 다시 시도해주세요.');
     }
   } catch (error) {
-    console.error("의뢰 작성 실패:", error);
-    console.log("status:", error?.response?.status);
-    console.log("data:", error?.response?.data);
+    const status = error?.response?.status;
+    const data = error?.response?.data; // 지금은 HTML일 수 있음 (DRF 디버그 템플릿)
+    const finalURL = error?.config?.baseURL
+      ? error.config.baseURL + error.config.url
+      : error?.config?.url;
+
+    console.error('의뢰 작성 실패:', error);
+    console.log('status:', status);
+    console.log('data:', data);
+    console.log('finalURL:', finalURL);
+
     alert(
-      `의뢰 작성 중 오류가 발생했습니다. ${
-        error?.response?.data ? JSON.stringify(error.response.data) : "콘솔 로그를 확인하세요."
-      }`
+      `의뢰 작성 중 오류가 발생했습니다.\n` +
+      (status ? `status: ${status}\n` : '') +
+      '자세한 내용은 콘솔을 확인해주세요.'
     );
   }
 };
+
+
 
 
 
@@ -235,7 +239,7 @@ const OwnerQuest = () => {
 
               <div className='modal-actions'>
                 <button type="button" className='btn-secondary' onClick={closeForm}>취소</button>
-                <button type="submit" className='btn-primary' onClick={handleWrite}>추가</button>
+                <button type="submit" className='btn-primary' onClick={(e) => handleWrite(e)}>추가</button>
               </div>
             </form>
           </div>
