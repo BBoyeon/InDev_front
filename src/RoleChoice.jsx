@@ -19,8 +19,8 @@ const RoleChoice = () => {
     <div className='role-choice'>
       <h1 className='role-choice-title'>오신 목적이 무엇이오?</h1>
       <div className='role-choice-buttons'>
-        <button onClick={handleCustomerClick} className='role-choice-customer'>마실을 나가고 싶소(일반손님)</button>
-        <button onClick={handleOwnerClick} className='role-choice-owner'>마실 다니는 손님을 받고 싶소(가게점주)</button>
+        <button onClick={handleCustomerClick} className='role-choice-customer'>마실을 나가고 싶소! <br></br>(일반 손님)</button>
+        <button onClick={handleOwnerClick} className='role-choice-owner'>마실 다니는 손님을 받고 싶소! <br></br>(가게 점주)</button>
       </div>
     </div>
   )

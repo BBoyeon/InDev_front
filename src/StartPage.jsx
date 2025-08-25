@@ -22,6 +22,9 @@ const StartPage = () => {
       <div className="start-page-side-decoration">
         <img src="/decorate/구름요소.png" alt="구름그림" className="side-deco-left" />
         <img src="/decorate/길요소.png" alt="길그림" className="side-deco-right" />
+        <div className="intro-bottom">
+          <p>© 2025 InDev. All rights reserved.</p>
+        </div>
       </div>
 
       <img src="/마실로고.png" alt="Logo" className="logo" />
