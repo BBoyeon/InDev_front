@@ -61,6 +61,21 @@ const OwnerQuest = () => {
     })
   }
 
+  useEffect(() => {
+  const fetchMissions = async () => {
+    try {
+      const res = await axios.get("https://indev-project.p-e.kr/mission/owner-missions/${ localStorage.getItem('user_pk') }/");
+      console.log("불러온 미션:", res.data);
+      setMissions(res.data);  // ✅ 받아온 데이터로 state 업데이트
+    } catch (err) {
+      console.error("미션 불러오기 실패:", err);
+    }
+  };
+
+  fetchMissions();
+}, []);
+
+
   // --- 서버로 미션 생성 ---
   const handleWrite = async (e) => {
     e.preventDefault();
