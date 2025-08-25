@@ -84,6 +84,8 @@ const OwnerOnboarding = () => {
 
     // ✅ 정말로 생성된 게 확인된 경우에만 저장/이동
     alert(`회원가입이 완료되었습니다. 환영합니다, ${data.name}님!`);
+    
+
     localStorage.setItem("user_pk", storeId);
     localStorage.setItem("store_name", data.name);
     localStorage.setItem("store_category", String(payload.category));
@@ -91,7 +93,7 @@ const OwnerOnboarding = () => {
     localStorage.setItem("introduce", introduce);
     localStorage.setItem("opening_date", openingDate);
 
-    navigate("/owner-dashboard");
+    navigate("/owner-dashboard/${storeId}");
   } catch (error) {
     console.error("회원가입 실패:", error);
     console.log("status:", error?.response?.status);

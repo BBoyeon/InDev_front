@@ -3,18 +3,19 @@ import './OwnerAppHeader.css'
 import { useNavigate } from 'react-router-dom'
 
 const OwnerAppHeader = ({ activeMenu }) => {
+  const user_pk = localStorage.getItem("user_pk")
   const navigate = useNavigate()
   const handleQuestClick = () => {
-      navigate('/owner-quest')
+      navigate(`/owner-quest/${user_pk}`)
   }
   const handleMarketClick = () => {
-      navigate('/owner-market')
+      navigate(`/owner-market/${user_pk}`)
   }
   const handleProfileClick = () => {
-      navigate('/owner-profile')
+      navigate(`/owner-profile/${user_pk}`)
   }
     const handleDashboardClick = () => {
-        navigate('/owner-dashboard')
+        navigate(`/owner-dashboard/${user_pk}`)
     }
 
   return (

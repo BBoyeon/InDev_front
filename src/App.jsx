@@ -61,13 +61,21 @@ function AnimatedRoutes() {
         
         <Route path="/owner-onboarding" element={<PageWrapper><OwnerOnboarding /></PageWrapper>} />
         <Route path="/owner-dashboard" element={<PageWrapper><OwnerDashboard /></PageWrapper>} />
+        <Route path="/owner-dashboard/:user_pk" element={<PageWrapper><OwnerDashboard /></PageWrapper>} />
         <Route path="/owner-quest" element={<PageWrapper><OwnerQuest /></PageWrapper>} />
+        <Route path="/owner-quest/:user_pk" element={<PageWrapper><OwnerQuest /></PageWrapper>} />
         <Route path="/owner-profile" element={<PageWrapper><OwnerProfile /></PageWrapper>} />
+        <Route path="/owner-profile/:user_pk" element={<PageWrapper><OwnerProfile /></PageWrapper>} />
         <Route path="/owner-market" element={<PageWrapper><OwnerMarket /></PageWrapper>} />
+        <Route path="/owner-market/:user_pk" element={<PageWrapper><OwnerMarket /></PageWrapper>} />
         <Route path="/owner-profile-edit" element={<PageWrapper><OwnerProfileEdit /></PageWrapper>} />
+         <Route path="/owner-profile-edit/:user_pk" element={<PageWrapper><OwnerProfileEdit /></PageWrapper>} />
         <Route path="/owner-ai" element={<PageWrapper><OwnerAi /></PageWrapper>} />
+        <Route path="/owner-ai/:user_pk" element={<PageWrapper><OwnerAi /></PageWrapper>} />
         <Route path="/owner-record" element={<PageWrapper><OwnerRecord /></PageWrapper>} />
+         <Route path="/owner-record/:user_pk" element={<PageWrapper><OwnerRecord /></PageWrapper>} />
         <Route path="/owner-quest-history" element={<PageWrapper><OwnerQuestHistory /></PageWrapper>} />
+        <Route path="/owner-quest-history/:user_pk" element={<PageWrapper><OwnerQuestHistory /></PageWrapper>} />
       </Routes>
     </AnimatePresence>
   );

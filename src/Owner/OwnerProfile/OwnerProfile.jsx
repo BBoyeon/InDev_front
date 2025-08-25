@@ -41,14 +41,14 @@ const OwnerProfile = () => {
         <div className="profile-grid">
       
           <div className="profile-card-history"
-            onClick={() => navigate('/owner-quest-history')}
+            onClick={() => navigate(`/owner-quest-history/${localStorage.getItem("user_pk")}`)}
           >나의 의뢰 완료 기록</div>
           <div className="profile-card-ai"
-            onClick={() => navigate('/owner-ai')}>
+            onClick={() => navigate(`/owner-ai/${localStorage.getItem("user_pk")}`)}>
            ai 전단지 생성하기
           </div>
           <div className="profile-card-record"
-            onClick={() => navigate('/owner-record')}
+            onClick={() => navigate(`/owner-record/${localStorage.getItem("user_pk")}`)}
           >나의 마실 나눔 기록들 확인하기</div>
         </div>
       </div>
